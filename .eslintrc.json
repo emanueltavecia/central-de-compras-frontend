@@ -1,0 +1,8 @@
+{
+  "extends": [
+    "@emanueltavecia/eslint-config/next"
+  ],
+  "rules": {
+    "react/no-unknown-property": "off"
+  }
+}

@@ -6,21 +6,25 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "prettier --write ./src && eslint --fix ./src",
+    "prepare": "husky"
   },
   "dependencies": {
+    "next": "16.0.2",
     "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "next": "16.0.2"
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@emanueltavecia/eslint-config": "^1.0.5",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
+    "eslint": "^8.57.1",
+    "husky": "^9.1.7",
+    "prettier-plugin-tailwindcss": "0.6.9",
     "tailwindcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "16.0.2"
-  }
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184"
 }
