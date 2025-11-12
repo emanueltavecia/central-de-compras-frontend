@@ -10,9 +10,30 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@mantine/carousel": "^8.3.7",
+    "@mantine/charts": "^8.3.7",
+    "@mantine/code-highlight": "^8.3.7",
+    "@mantine/core": "^8.3.7",
+    "@mantine/dates": "^8.3.7",
+    "@mantine/dropzone": "^8.3.7",
+    "@mantine/form": "^8.3.7",
+    "@mantine/hooks": "^8.3.7",
+    "@mantine/modals": "^8.3.7",
+    "@mantine/notifications": "^8.3.7",
+    "@mantine/nprogress": "^8.3.7",
+    "@mantine/spotlight": "^8.3.7",
+    "@mantine/tiptap": "^8.3.7",
+    "@tiptap/extension-link": "^3.10.7",
+    "@tiptap/pm": "^3.10.7",
+    "@tiptap/react": "^3.10.7",
+    "@tiptap/starter-kit": "^3.10.7",
+    "dayjs": "^1.11.19",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "next": "16.0.2",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "recharts": "^3.4.1"
   },
   "devDependencies": {
     "@emanueltavecia/eslint-config": "^1.0.5",
@@ -22,6 +43,8 @@
     "@types/react-dom": "^19",
     "eslint": "^8.57.1",
     "husky": "^9.1.7",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
     "prettier-plugin-tailwindcss": "0.6.9",
     "tailwindcss": "^4",
     "typescript": "^5"

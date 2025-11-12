@@ -1,6 +1,12 @@
 import { Inter } from 'next/font/google'
 
+import {
+  ColorSchemeScript,
+  MantineProvider,
+  mantineHtmlProps,
+} from '@mantine/core'
 import type { Metadata } from 'next'
+import '@mantine/core/styles.css'
 import './globals.css'
 
 const inter = Inter({
@@ -19,8 +25,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-br">
-      <body className={`${inter.variable} antialiased`}>{children}</body>
+    <html lang="en" {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript />
+      </head>
+      <body className={`${inter.variable} antialiased`}>
+        <MantineProvider>{children}</MantineProvider>
+      </body>
     </html>
   )
 }
