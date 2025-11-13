@@ -3,6 +3,14 @@
     "@emanueltavecia/eslint-config/next"
   ],
   "rules": {
-    "react/no-unknown-property": "off"
+    "react/no-unknown-property": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ]
   }
 }
