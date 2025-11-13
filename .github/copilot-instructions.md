@@ -102,8 +102,28 @@ Defina todas as cores no arquivo `src/app/globals.css`:
 - **SEMPRE** use `zod` para validação e tipagem
 - Combine com componentes Mantine para UI
 
+### Organização de Schemas
+- **TODOS** os schemas Zod devem ser criados na pasta `src/utils/schemas`
+- Crie um arquivo por entidade/feature (ex: `login.ts`, `user.ts`, `product.ts`)
+- Exporte os schemas e seus tipos TypeScript inferidos
+- Mantenha os schemas centralizados para facilitar reutilização e manutenção
+
+```tsx
+// src/utils/schemas/user.ts
+import { z } from 'zod'
+import { VALIDATION_MESSAGES } from '@/utils/constants/validation-messages'
+
+export const createUserSchema = z.object({
+  name: z.string().min(1, VALIDATION_MESSAGES.required),
+  email: z.string().email(VALIDATION_MESSAGES.email),
+  age: z.number().min(18, VALIDATION_MESSAGES.minAge),
+})
+
+export type CreateUserInput = z.infer<typeof createUserSchema>
+```
+
 ### Mensagens de Validação
-- **TODAS** as mensagens de erro de validação devem estar centralizadas em `src/lib/validations/messages.ts`
+- **TODAS** as mensagens de erro de validação devem estar centralizadas em `src/utils/constants/validation-messages.ts`
 - **NÃO** escreva mensagens de erro diretamente nos schemas Zod
 - Importe as mensagens do arquivo centralizado para manter consistência
 
@@ -149,7 +169,7 @@ export async function createUser(formData: FormData) {
 O Next.js 15 introduziu o `'use cache'` e sistema de tags para gerenciamento de cache. Siga estas diretrizes:
 
 #### Tags de Cache
-- **TODAS** as tags de cache devem estar centralizadas em `src/lib/constants/cache-tags.ts`
+- **TODAS** as tags de cache devem estar centralizadas em `src/utils/constants/cache-tags.ts`
 - **NÃO** escreva strings de tags diretamente no código
 - Use constantes para evitar erros de digitação e facilitar manutenção
 
@@ -158,7 +178,7 @@ O Next.js 15 introduziu o `'use cache'` e sistema de tags para gerenciamento de 
 ```tsx
 // app/dashboard/page.tsx
 import { cacheTag } from 'next/cache'
-import { CACHE_TAGS } from '@/lib/constants/cache-tags'
+import { CACHE_TAGS } from '@/utils/constants/cache-tags'
 
 async function getData() {
   'use cache'
@@ -191,7 +211,7 @@ export default async function DashboardPage() {
 'use server'
 
 import { revalidateTag } from 'next/cache'
-import { CACHE_TAGS } from '@/lib/constants/cache-tags'
+import { CACHE_TAGS } from '@/utils/constants/cache-tags'
 
 export async function dashboardAction() {
   // Executar lógica de negócio
