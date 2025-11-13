@@ -19,23 +19,6 @@ Este é um projeto **Next.js 15** utilizando **App Router**. O nome do sistema �
 - **Componentes de UI**: usar biblioteca Mantine preferencialmente
 - **Layouts**: aproveitar o sistema de layouts do App Router
 
-```tsx
-// ✅ Componente servidor (preferido)
-export default function ProductList() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {/* conteúdo */}
-    </div>
-  )
-}
-
-// ❌ Evitar uso desnecessário de 'use client'
-'use client'
-export default function StaticComponent() {
-  return <div>Conteúdo estático</div>
-}
-```
-
 ## Bibliotecas de Componentes
 
 ### Mantine
@@ -46,8 +29,8 @@ export default function StaticComponent() {
   - Dropdowns, Selects
 
 ### Implementação Manual
-- **Header**: navegação principal customizada
-- **Sidebar**: menu lateral customizado
+- **Header**: navegação principal customizada, se houver
+- **Sidebar**: menu lateral customizado, se houver
 - **Page Containers**: wrappers de página customizados
 - **Layouts específicos**: estruturas de página únicas
 
@@ -119,78 +102,24 @@ Defina todas as cores no arquivo `src/app/globals.css`:
 - **SEMPRE** use `zod` para validação e tipagem
 - Combine com componentes Mantine para UI
 
-```tsx
-'use client'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { TextInput, Button } from '@mantine/core'
+### Mensagens de Validação
+- **TODAS** as mensagens de erro de validação devem estar centralizadas em `src/lib/validations/messages.ts`
+- **NÃO** escreva mensagens de erro diretamente nos schemas Zod
+- Importe as mensagens do arquivo centralizado para manter consistência
 
-const userSchema = z.object({
-  name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
-  email: z.string().email('Email inválido'),
-})
+## Exportações de Componentes
 
-type UserForm = z.infer<typeof userSchema>
-
-export default function UserForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<UserForm>({
-    resolver: zodResolver(userSchema),
-  })
-
-  const onSubmit = (data: UserForm) => {
-    console.log(data)
-  }
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <TextInput
-        label="Nome"
-        error={errors.name?.message}
-        {...register('name')}
-      />
-      <TextInput
-        label="Email"
-        type="email"
-        error={errors.email?.message}
-        {...register('email')}
-      />
-      <Button type="submit" className="bg-primary hover:bg-primary-dark">
-        Salvar
-      </Button>
-    </form>
-  )
-}
-```
-
-## Estrutura de Pastas
-
-```
-src/
-├── app/                    # App Router
-│   ├── (auth)/            # Grupo de rotas
-│   ├── dashboard/         # Páginas
-│   ├── globals.css        # Estilos globais + variáveis
-│   ├── layout.tsx         # Layout raiz
-│   └── page.tsx           # Página inicial
-├── components/            # Componentes reutilizáveis
-│   ├── ui/               # Componentes base (com Mantine)
-│   ├── forms/            # Componentes de formulário
-│   ├── layout/           # Header, Sidebar customizados
-│   └── features/         # Componentes específicos de funcionalidade
-├── lib/                  # Utilitários e configurações
-│   ├── validations/      # Schemas Zod
-│   └── utils.ts          # Funções utilitárias
-└── types/                # Tipos TypeScript
-```
+### Regras de Exportação
+- **Export Default**: use APENAS para componentes que são páginas/rotas do Next.js (`page.tsx`, `layout.tsx`, `error.tsx`, `loading.tsx`, etc.)
+- **Named Export**: use para TODOS os outros componentes reutilizáveis
+- Isso facilita refatoração, autocomplete e importações consistentes
 
 ## Boas Práticas App Router
 
 ### Server Actions
+
+- Utilizar server actions sempre que possível
+
 ```tsx
 // actions/user.ts
 'use server'
@@ -214,6 +143,90 @@ export async function createUser(formData: FormData) {
   // Lógica de criação do usuário
 }
 ```
+
+### Cache e Revalidação de Dados
+
+O Next.js 15 introduziu o `'use cache'` e sistema de tags para gerenciamento de cache. Siga estas diretrizes:
+
+#### Tags de Cache
+- **TODAS** as tags de cache devem estar centralizadas em `src/lib/constants/cache-tags.ts`
+- **NÃO** escreva strings de tags diretamente no código
+- Use constantes para evitar erros de digitação e facilitar manutenção
+
+#### Implementação de Cache em Funções
+
+```tsx
+// app/dashboard/page.tsx
+import { cacheTag } from 'next/cache'
+import { CACHE_TAGS } from '@/lib/constants/cache-tags'
+
+async function getData() {
+  'use cache'
+  cacheTag(CACHE_TAGS.DASHBOARD.DATA)
+  
+  // Buscar dados do servidor
+  const response = await fetch('https://api.example.com/data')
+  return response.json()
+}
+
+export default async function DashboardPage() {
+  const data = await getData()
+  
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <p>Data: {data}</p>
+    </div>
+  )
+}
+```
+
+#### Revalidação de Cache
+
+- **SEMPRE** use `{expire: 0}` no `revalidateTag` para forçar revalidação imediata
+- Implemente revalidação em Server Actions quando dados forem modificados
+
+```tsx
+// components/dashboard/action.ts
+'use server'
+
+import { revalidateTag } from 'next/cache'
+import { CACHE_TAGS } from '@/lib/constants/cache-tags'
+
+export async function dashboardAction() {
+  // Executar lógica de negócio
+  await fetch()
+  
+  // Revalidar cache com expire: 0
+  revalidateTag(CACHE_TAGS.DASHBOARD.DATA, { expire: 0 })
+}
+```
+
+#### Componente com Revalidação Manual
+
+```tsx
+// components/dashboard/button.tsx
+'use client'
+
+import { Button } from '@mantine/core'
+import { dashboardAction } from './action'
+
+export function DashboardButton() {
+  return (
+    <Button onClick={dashboardAction}>
+      Atualizar Dados
+    </Button>
+  )
+}
+```
+
+#### Boas Práticas de Cache
+
+1. **Sempre use cache tags**: facilita revalidação granular
+2. **Centralize as tags**: use o arquivo `cache-tags.ts`
+3. **Revalide após mutações**: sempre que criar, atualizar ou deletar dados
+4. **Use `{expire: 0}`**: garante revalidação imediata
+5. **Nomeie tags descritivamente**: use padrão `modulo-acao` (ex: `users-list`, `product-detail`)
 
 ### Loading e Error States
 ```tsx
