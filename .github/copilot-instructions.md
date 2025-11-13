@@ -127,6 +127,16 @@ export type CreateUserInput = z.infer<typeof createUserSchema>
 - **NÃO** escreva mensagens de erro diretamente nos schemas Zod
 - Importe as mensagens do arquivo centralizado para manter consistência
 
+## Qualidade de Código
+
+### Comentários
+- **NÃO** adicione comentários no código
+- O código deve ser autoexplicativo através de:
+  - Nomes de variáveis e funções descritivos
+  - Estrutura clara e organizada
+  - Tipos TypeScript bem definidos
+- Comentários só são aceitáveis em casos excepcionais de lógica extremamente complexa
+
 ## Exportações de Componentes
 
 ### Regras de Exportação
