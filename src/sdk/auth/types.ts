@@ -1,6 +1,7 @@
-import { User } from "@/types/user"
+import { SuccessResponse } from '@/types/request'
+import { User } from '@/types/user'
 
-export interface LoginResponse {
+export type LoginResponse = SuccessResponse<{
   token: string
   user: User
-}
+}>
