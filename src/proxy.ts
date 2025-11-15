@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const AUTH_COOKIE_NAME = 'auth-token'
+import { COOKIE_NAMES } from './utils/constants/cookie-names'
 
 const publicRoutes = ['/login']
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const token = request.cookies.get(AUTH_COOKIE_NAME)?.value
+  const token = request.cookies.get(COOKIE_NAMES.AUTH.TOKEN)?.value
   const isAuthenticated = !!token
 
   const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route))
