@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextInput, PasswordInput, Button } from '@mantine/core'
@@ -13,6 +13,9 @@ import { loginSchema, type LoginFormData } from '@/utils/schemas/login'
 
 export function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirect') || '/dashboard'
+
   const {
     register,
     handleSubmit,
@@ -27,10 +30,11 @@ export function LoginForm() {
     if (isSuccess) {
       notifications.show({
         title: 'Login realizado!',
-        message: 'Você será redirecionado para o dashboard',
+        message: 'Você será redirecionado',
         color: 'green',
       })
-      router.push('/dashboard')
+      router.push(redirectTo)
+      router.refresh()
     } else {
       notifications.show({
         title: 'Erro ao fazer login',
