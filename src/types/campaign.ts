@@ -21,13 +21,3 @@ export interface Campaign {
 export interface CampaignStatus {
   active: boolean
 }
-
-export interface CampaignFilters {
-  supplierOrgId?: string
-  name?: string
-  type?: CampaignType
-  scope?: CampaignScope
-  active?: boolean
-  startAtFrom?: string
-  endAtTo?: string
-}

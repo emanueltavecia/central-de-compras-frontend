@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { getSession } from '@/lib/auth'
+import { logout } from '@/lib/auth'
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -9,26 +9,20 @@ export const api = axios.create({
   },
 })
 
-api.interceptors.request.use(
-  async (config) => {
-    const { token } = await getSession()
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  },
-)
+export async function setAuthToken(token: string) {
+  'use server'
+  api.defaults.headers.common.Authorization = `Bearer ${token}`
+}
+
+export function clearAuthToken() {
+  delete api.defaults.headers.common.Authorization
+}
 
 api.interceptors.response.use(
-  (response) => {
-    return response
-  },
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // logout()
+      logout()
     }
 
     return Promise.reject(error)

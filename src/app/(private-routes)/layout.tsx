@@ -12,7 +12,9 @@ export default function PrivateRoutesLayout({
       <Suspense fallback={<HeaderSkeleton />}>
         <Header />
       </Suspense>
-      <main>{children}</main>
+      <main>
+        <Suspense>{children}</Suspense>
+      </main>
     </div>
   )
 }

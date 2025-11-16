@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+
 import { Inter } from 'next/font/google'
 
 import {
@@ -7,6 +9,9 @@ import {
 } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
 import type { Metadata } from 'next'
+
+import { TokenInitializer } from '@/components/auth/token-initializer'
+
 import '@mantine/core/styles.css'
 import '@mantine/notifications/styles.css'
 import './globals.css'
@@ -32,6 +37,9 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className={`${inter.variable} antialiased`}>
+        <Suspense>
+          <TokenInitializer />
+        </Suspense>
         <MantineProvider>
           <Notifications position="top-right" />
           {children}
