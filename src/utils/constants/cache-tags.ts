@@ -5,4 +5,10 @@ export const CACHE_TAGS = {
   CAMPAIGNS: {
     LIST: 'campaigns-list',
   },
+  PRODUCTS: {
+    LIST: 'products-list',
+  },
+  ORDERS: {
+    LIST: 'orders-list',
+  },
 } as const
