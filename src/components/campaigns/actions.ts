@@ -1,8 +1,8 @@
 'use server'
 
+import { getSession } from '@/lib/auth/session'
 import { categoriesService } from '@/sdk/categories'
 import { productsService } from '@/sdk/products'
-import { getSession } from '@/lib/auth/session'
 
 export async function getCategories() {
   try {

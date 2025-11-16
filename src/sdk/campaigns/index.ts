@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios'
+
 import {
   GetCampaignsParams,
   GetCampaignsResponse,
@@ -11,7 +13,6 @@ import {
 
 import { api } from '@/sdk'
 import { CAMPAIGNS_ROUTES } from '@/sdk/campaigns/routes'
-import { AxiosError } from 'axios'
 
 export const campaignsService = {
   async getCampaigns(

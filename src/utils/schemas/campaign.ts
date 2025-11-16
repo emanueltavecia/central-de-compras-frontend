@@ -1,4 +1,5 @@
 import { z } from 'zod'
+
 import { VALIDATION_MESSAGES } from '@/utils/constants/validation-messages'
 import { CampaignScope, CampaignType } from '@/utils/enums'
 

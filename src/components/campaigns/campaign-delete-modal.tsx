@@ -1,9 +1,11 @@
 'use client'
 
+import { useState } from 'react'
+
+import { useRouter } from 'next/navigation'
+
 import { Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
 
 import { deleteCampaign } from '@/app/(private-routes)/campaigns/action'

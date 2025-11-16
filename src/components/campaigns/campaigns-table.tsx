@@ -155,7 +155,7 @@ export function CampaignsTable({ campaigns }: CampaignsTableProps) {
                     {formatDate(campaign.endAt)}
                   </Text>
                 </Table.Td>
-                <Table.Td className="lg:static-none sticky right-0 bg-white text-center drop-shadow-[-8px_0_16px_rgba(0,0,0,0.1)] lg:static lg:drop-shadow-none lg:bg-transparent">
+                <Table.Td className="lg:static-none sticky right-0 bg-white text-center drop-shadow-[-8px_0_16px_rgba(0,0,0,0.1)] lg:static lg:bg-transparent lg:drop-shadow-none">
                   <CampaignActionsMenu campaign={campaign} />
                 </Table.Td>
               </Table.Tr>

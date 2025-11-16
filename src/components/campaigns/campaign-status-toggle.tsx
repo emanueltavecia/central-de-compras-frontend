@@ -1,8 +1,9 @@
 'use client'
 
+import { useState } from 'react'
+
 import { Switch } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { useState } from 'react'
 
 import { toggleCampaignStatus } from '@/app/(private-routes)/campaigns/action'
 

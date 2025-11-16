@@ -1,5 +1,8 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Button,
   Group,
@@ -12,22 +15,20 @@ import {
 } from '@mantine/core'
 import { DatePickerInput } from '@mantine/dates'
 import { notifications } from '@mantine/notifications'
-import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 
+import { getCategories, getProducts } from './actions'
+
+import {
+  createCampaign,
+  updateCampaign,
+} from '@/app/(private-routes)/campaigns/action'
 import type { Campaign, Category, Product } from '@/types'
 import { CampaignScope, CampaignType } from '@/utils/enums'
 import {
   campaignSchema,
   type CampaignFormInput,
 } from '@/utils/schemas/campaign'
-
-import {
-  createCampaign,
-  updateCampaign,
-} from '@/app/(private-routes)/campaigns/action'
-import { getCategories, getProducts } from './actions'
 
 interface CampaignModalProps {
   opened: boolean

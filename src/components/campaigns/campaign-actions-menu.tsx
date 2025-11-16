@@ -1,14 +1,17 @@
 'use client'
 
+import { useState } from 'react'
+
+import { useRouter } from 'next/navigation'
+
 import { ActionIcon, Menu } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { MoreVertical, Trash2 } from 'lucide-react'
 
-import { toggleCampaignStatus } from '@/app/(private-routes)/campaigns/action'
-import { CampaignModal } from './campaign-modal'
 import { CampaignDeleteModal } from './campaign-delete-modal'
+import { CampaignModal } from './campaign-modal'
+
+import { toggleCampaignStatus } from '@/app/(private-routes)/campaigns/action'
 import type { Campaign } from '@/types'
 
 interface CampaignActionsMenuProps {
