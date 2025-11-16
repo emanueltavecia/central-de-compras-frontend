@@ -56,7 +56,7 @@ export const campaignsService = {
     try {
       const {
         data: { data },
-      } = await api.patch<UpdateCampaignResponse>(
+      } = await api.put<UpdateCampaignResponse>(
         CAMPAIGNS_ROUTES.UPDATE_CAMPAIGN(id),
         body,
       )
