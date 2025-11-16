@@ -11,6 +11,9 @@ export const CACHE_TAGS = {
   ORDERS: {
     LIST: 'orders-list',
   },
+  CATEGORIES: {
+    LIST: 'categories-list',
+  },
   CASHBACK: {
     WALLET: 'cashback-wallet',
     TRANSACTIONS: 'cashback-transactions',
