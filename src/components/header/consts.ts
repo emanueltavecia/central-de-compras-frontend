@@ -20,7 +20,6 @@ export const ROUTE_PERMISSIONS: RoutePermission = {
   organizations: {
     name: 'Organizações',
     route: '/organizations',
-    permissions: [PermissionName.MANAGE_ORGANIZATIONS],
   },
   paymentConditions: {
     name: 'Condições de Pagamento',
@@ -31,5 +30,9 @@ export const ROUTE_PERMISSIONS: RoutePermission = {
     name: 'Produtos',
     route: '/products',
     permissions: [PermissionName.MANAGE_PRODUCTS],
+  },
+  categories: {
+    name: 'Categorias',
+    route: '/categories',
   },
 }

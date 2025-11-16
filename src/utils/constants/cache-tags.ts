@@ -5,4 +5,7 @@ export const CACHE_TAGS = {
   CAMPAIGNS: {
     LIST: 'campaigns-list',
   },
+  CATEGORIES: {
+    LIST: 'categories-list',
+  },
 } as const
