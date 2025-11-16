@@ -14,7 +14,6 @@ import {
   type CreateProductInput,
 } from '@/utils/schemas/products'
 
-
 export function ProductsPageClient() {
   const [opened, setOpened] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
