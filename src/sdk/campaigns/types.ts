@@ -13,3 +13,30 @@ export interface GetCampaignsParams {
 }
 
 export type GetCampaignsResponse = SuccessResponse<Campaign[]>
+
+export interface CreateCampaignBody {
+  supplierOrgId: string
+  name: string
+  type: CampaignType
+  scope?: CampaignScope
+  minTotal?: number | null
+  minQuantity?: number | null
+  cashbackPercent?: number | null
+  giftProductId?: string | null
+  categoryId?: string | null
+  productIds?: string[] | null
+  startAt?: string | null
+  endAt?: string | null
+}
+
+export type CreateCampaignResponse = SuccessResponse<Campaign>
+
+export interface UpdateCampaignBody extends CreateCampaignBody {}
+
+export type UpdateCampaignResponse = SuccessResponse<Campaign>
+
+export interface UpdateCampaignStatusBody {
+  active: boolean
+}
+
+export type UpdateCampaignStatusResponse = SuccessResponse<Campaign>

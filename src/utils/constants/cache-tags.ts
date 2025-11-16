@@ -8,4 +8,8 @@ export const CACHE_TAGS = {
   CATEGORIES: {
     LIST: 'categories-list',
   },
+  CASHBACK: {
+    WALLET: 'cashback-wallet',
+    TRANSACTIONS: 'cashback-transactions',
+  },
 } as const

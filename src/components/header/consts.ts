@@ -1,6 +1,6 @@
 import { RoutePermission } from './types'
 
-import { PermissionName } from '@/utils/enums'
+import { UserRole } from '@/utils/enums'
 
 export const ROUTE_PERMISSIONS: RoutePermission = {
   dashboard: {
@@ -10,29 +10,48 @@ export const ROUTE_PERMISSIONS: RoutePermission = {
   campaigns: {
     name: 'Campanhas',
     route: '/campaigns',
-    permissions: [PermissionName.MANAGE_CAMPAIGNS],
+    roles: [UserRole.SUPPLIER],
+  },
+  cashback: {
+    name: 'Cashback',
+    route: '/cashback',
+    roles: [UserRole.STORE],
+    submenu: [
+      {
+        name: 'Carteira',
+        route: '/cashback/wallet',
+        roles: [UserRole.STORE],
+      },
+      {
+        name: 'Transações',
+        route: '/cashback/transactions',
+        roles: [UserRole.STORE],
+      },
+    ],
   },
   orders: {
     name: 'Pedidos',
     route: '/orders',
-    permissions: [PermissionName.VIEW_ORDERS],
+    roles: [UserRole.STORE, UserRole.SUPPLIER],
   },
   organizations: {
     name: 'Organizações',
     route: '/organizations',
+    roles: [UserRole.ADMIN],
   },
   paymentConditions: {
     name: 'Condições de Pagamento',
     route: '/payment-conditions',
-    permissions: [PermissionName.MANAGE_CONDITIONS],
+    roles: [UserRole.SUPPLIER],
   },
   products: {
     name: 'Produtos',
     route: '/products',
-    permissions: [PermissionName.MANAGE_PRODUCTS],
+    roles: [UserRole.SUPPLIER],
   },
   categories: {
     name: 'Categorias',
     route: '/categories',
+    roles: [UserRole.SUPPLIER],
   },
 }
