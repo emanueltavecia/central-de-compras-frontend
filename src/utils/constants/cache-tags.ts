@@ -5,4 +5,8 @@ export const CACHE_TAGS = {
   CAMPAIGNS: {
     LIST: 'campaigns-list',
   },
+  CASHBACK: {
+    WALLET: 'cashback-wallet',
+    TRANSACTIONS: 'cashback-transactions',
+  },
 } as const
