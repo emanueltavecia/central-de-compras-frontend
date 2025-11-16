@@ -1,8 +1,8 @@
+import { cashbackRoutes } from './routes'
 import type {
   GetCashbackTransactionsResponse,
   GetCashbackWalletResponse,
 } from './types'
-import { cashbackRoutes } from './routes'
 
 import { api } from '@/sdk/client'
 

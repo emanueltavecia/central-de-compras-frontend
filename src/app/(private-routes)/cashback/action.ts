@@ -2,8 +2,8 @@
 
 import { cacheTag } from 'next/cache'
 
-import { cashbackService } from '@/sdk/cashback'
 import { getSession } from '@/lib/auth'
+import { cashbackService } from '@/sdk/cashback'
 import { CACHE_TAGS } from '@/utils/constants/cache-tags'
 
 async function fetchCashbackWallet(organizationId: string) {

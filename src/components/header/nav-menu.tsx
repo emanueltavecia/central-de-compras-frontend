@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+
 import { Menu } from '@mantine/core'
 
 import type { RouteItem } from './types'
@@ -14,7 +15,7 @@ export function NavMenu({ item }: NavMenuProps) {
     return (
       <Menu trigger="hover" openDelay={100}>
         <Menu.Target>
-          <span className="text-text-secondary hover:text-primary text-[14px] font-medium transition-colors cursor-pointer">
+          <span className="text-text-secondary hover:text-primary cursor-pointer text-[14px] font-medium transition-colors">
             {item.name}
           </span>
         </Menu.Target>
