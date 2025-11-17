@@ -6,7 +6,7 @@ import { OrganizationInfoCard } from '@/components/profile/organization-info-car
 import { PersonalInfoCard } from '@/components/profile/personal-info-card'
 import { ProfileHeader } from '@/components/profile/profile-header'
 import { getSession } from '@/lib/auth'
-import { OrgType, UserRole } from '@/utils/enums'
+import { UserRole } from '@/utils/enums'
 
 export default async function ProfilePage() {
   const { user } = await getSession()

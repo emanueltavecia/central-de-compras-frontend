@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { ROUTE_PERMISSIONS } from './consts'
 import { HeaderActions } from './header-actions'
 import { NavMenu } from './nav-menu'
-import { OrganizationsDropdown } from './organizations-dropdown'
 
 import { getSession } from '@/lib/auth'
 
@@ -15,7 +14,7 @@ export async function Header() {
   }
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="sticky top-0 right-0 left-0 z-10 bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">

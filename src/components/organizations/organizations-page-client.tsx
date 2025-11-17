@@ -18,6 +18,7 @@ import {
   Paper,
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
+import { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -35,17 +36,11 @@ import {
   deleteUser,
 } from '@/lib/users'
 import { type Organization, OrgType } from '@/sdk/organizations'
-import {
-  type User,
-  type CreateUserInput,
-  type UpdateUserInput,
-  UserAccountStatus,
-} from '@/sdk/users'
+import { type User, UserAccountStatus } from '@/sdk/users'
 import {
   organizationSchema,
   type OrganizationInput,
 } from '@/utils/schemas/organization'
-import { AxiosError } from 'axios'
 
 type Variant = 'stores' | 'suppliers'
 
@@ -426,7 +421,8 @@ export function OrganizationsPageClient({
       notifications.show({
         title: 'Erro',
         message:
-          (error as AxiosError)?.message || 'Não foi possível alterar o status do usuário',
+          (error as AxiosError)?.message ||
+          'Não foi possível alterar o status do usuário',
         color: 'red',
       })
     }
@@ -464,13 +460,20 @@ export function OrganizationsPageClient({
       console.error('Error deleting user:', error)
       notifications.show({
         title: 'Erro',
-        message: (error as AxiosError)?.message || 'Não foi possível excluir o usuário',
+        message:
+          (error as AxiosError)?.message ||
+          'Não foi possível excluir o usuário',
         color: 'red',
       })
     }
   }
 
-  const onAddUserSubmit = async (values: any) => {
+  const onAddUserSubmit = async (values: {
+    email: string
+    password: string
+    fullName: string
+    phone: string
+  }) => {
     if (!usersOpen) return
 
     try {
@@ -492,21 +495,35 @@ export function OrganizationsPageClient({
       setAddUserOpen(false)
       addUserForm.reset()
       await loadUsers(usersOpen.id)
-    } catch (error: any) {
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível criar o usuário'
       console.error('Error creating user:', error)
       notifications.show({
         title: 'Erro',
-        message: error.message || 'Não foi possível criar o usuário',
+        message: errorMessage,
         color: 'red',
       })
     }
   }
 
-  const onEditUserSubmit = async (values: any) => {
+  const onEditUserSubmit = async (values: {
+    email: string
+    password?: string
+    fullName: string
+    phone: string
+  }) => {
     if (!editUserOpen) return
 
     try {
-      const updateData: any = {
+      const updateData: {
+        email: string
+        fullName: string
+        phone: string
+        password?: string
+      } = {
         email: values.email,
         fullName: values.fullName,
         phone: values.phone,
@@ -530,11 +547,15 @@ export function OrganizationsPageClient({
       if (usersOpen) {
         await loadUsers(usersOpen.id)
       }
-    } catch (error: any) {
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível atualizar o usuário'
       console.error('Error updating user:', error)
       notifications.show({
         title: 'Erro',
-        message: error.message || 'Não foi possível atualizar o usuário',
+        message: errorMessage,
         color: 'red',
       })
     }

@@ -1,10 +1,4 @@
-import type {
-  User,
-  UserFilters,
-  CreateUserInput,
-  UpdateUserInput,
-  UpdateUserStatusInput,
-} from './types'
+import type { UserFilters } from './types'
 
 export const usersRoutes = {
   list: (filters?: UserFilters) => {

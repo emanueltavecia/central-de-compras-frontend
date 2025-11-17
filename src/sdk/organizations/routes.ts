@@ -8,6 +8,8 @@ import {
 
 import { api } from '../client'
 
+import type { User } from '@/types/user'
+
 export const organizationsRoutes = {
   async getAll(filters?: OrganizationFilters): Promise<Organization[]> {
     const { data } = await api.get<{ data: Organization[] }>('/organizations', {
@@ -57,8 +59,8 @@ export const organizationsRoutes = {
     return data.data
   },
 
-  async getUsers(id: string): Promise<any[]> {
-    const { data } = await api.get<{ data: any[] }>(
+  async getUsers(id: string): Promise<User[]> {
+    const { data } = await api.get<{ data: User[] }>(
       `/organizations/${id}/users`,
     )
     return data.data

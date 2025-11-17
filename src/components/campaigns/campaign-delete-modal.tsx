@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 
-import { useRouter } from 'next/navigation'
-
 import { Button, Group, Modal, Stack, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { AlertTriangle } from 'lucide-react'
@@ -22,7 +20,6 @@ export function CampaignDeleteModal({
   onClose,
   campaign,
 }: CampaignDeleteModalProps) {
-  const router = useRouter()
   const [loading, setLoading] = useState(false)
 
   const handleDelete = async () => {
@@ -37,7 +34,7 @@ export function CampaignDeleteModal({
           color: 'green',
         })
         onClose()
-        router.refresh()
+        // router.refresh()
       } else {
         notifications.show({
           title: 'Erro',

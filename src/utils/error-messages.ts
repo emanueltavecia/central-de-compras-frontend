@@ -1,7 +1,7 @@
 interface ErrorResponse {
   message?: string
   errorCode?: string
-  error?: string | { validationErrors?: any[] }
+  error?: string | { validationErrors?: Array<Record<string, string | number>> }
 }
 
 const ERROR_MESSAGES: Record<string, string> = {

@@ -1,6 +1,6 @@
 'use server'
 
-import { cacheTag, revalidateTag } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 
 import { ordersService } from '@/sdk/orders'
 import type { Order } from '@/types'
@@ -8,9 +8,6 @@ import { CACHE_TAGS } from '@/utils/constants/cache-tags'
 import type { CreateOrderInput } from '@/utils/schemas/orders'
 
 export async function getOrders(): Promise<Order[]> {
-  'use cache'
-  cacheTag(CACHE_TAGS.ORDERS.LIST)
-
   try {
     const orders = await ordersService.getOrders({})
     return orders

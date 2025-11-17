@@ -1,11 +1,6 @@
-import { cacheTag } from 'next/cache'
-
 import { DashboardButton } from '@/components/dashboard/button'
-import { CACHE_TAGS } from '@/utils/constants/cache-tags'
 
 async function getData() {
-  'use cache'
-  cacheTag(CACHE_TAGS.DASHBOARD.DATA)
   await new Promise((resolve) => setTimeout(resolve, 1500))
   console.log('Fetching dashboard data...')
   return new Date().toISOString()

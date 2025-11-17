@@ -9,6 +9,7 @@ import {
   UpdateOrganizationInput,
   UpdateOrganizationStatusInput,
 } from '@/sdk/organizations/types'
+import type { User } from '@/types/user'
 import { COOKIE_NAMES } from '@/utils/constants/cookie-names'
 import { getErrorMessage } from '@/utils/error-messages'
 
@@ -108,7 +109,7 @@ export async function updateOrganizationStatus(
   return response.data
 }
 
-export async function getOrganizationUsers(id: string): Promise<any[]> {
+export async function getOrganizationUsers(id: string): Promise<User[]> {
   const response = await fetchWithAuth(`/organizations/${id}/users`)
   return response.data
 }

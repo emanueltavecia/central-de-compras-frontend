@@ -8,7 +8,7 @@ export interface ChangeRequest {
   id: string
   userId: string
   organizationId: string
-  requestedChanges: Record<string, any>
+  requestedChanges: Record<string, string | number | boolean>
   status: ChangeRequestStatus
   reviewedBy?: string
   reviewedAt?: string
@@ -29,7 +29,7 @@ export interface ChangeRequest {
 }
 
 export interface CreateChangeRequestInput {
-  requestedChanges: Record<string, any>
+  requestedChanges: Record<string, string | number | boolean>
 }
 
 export interface ReviewChangeRequestInput {

@@ -35,8 +35,7 @@ export function ChangeRequestModal({
     setIsSubmitting(true)
 
     try {
-      // Criar objeto apenas com campos que foram alterados
-      const requestedChanges: Record<string, any> = {}
+      const requestedChanges: Record<string, string> = {}
       if (formData.name !== currentData?.name) {
         requestedChanges.fullName = formData.name
       }

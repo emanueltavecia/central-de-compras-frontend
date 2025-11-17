@@ -5,7 +5,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 import { logout, SessionUser } from '@/lib/auth'
-import { UserRole } from '@/utils/enums'
 
 interface UserMenuProps {
   user: SessionUser
@@ -28,19 +27,6 @@ export function UserMenu({ user }: UserMenuProps) {
       setIsOpen(false)
     }, 500)
     setTimeoutId(id)
-  }
-
-  const getRoleLabel = (role: UserRole) => {
-    switch (role) {
-      case UserRole.ADMIN:
-        return 'Admin'
-      case UserRole.SUPPLIER:
-        return 'Fornecedor'
-      case UserRole.STORE:
-        return 'Lojista'
-      default:
-        return ''
-    }
   }
 
   return (

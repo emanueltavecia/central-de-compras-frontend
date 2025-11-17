@@ -1,6 +1,6 @@
 'use server'
 
-import { cacheTag, revalidateTag } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 
 import { getSession } from '@/lib/auth/session'
 import { categoriesService } from '@/sdk/categories'
@@ -13,9 +13,6 @@ import type {
 } from '@/utils/schemas/products'
 
 export async function getCategories(): Promise<Category[]> {
-  'use cache'
-  cacheTag(CACHE_TAGS.CATEGORIES.LIST)
-
   try {
     const categories = await categoriesService.getCategories({})
     return categories
@@ -26,9 +23,6 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getProducts(): Promise<Product[]> {
-  'use cache'
-  cacheTag(CACHE_TAGS.PRODUCTS.LIST)
-
   try {
     const products = await productsService.getProducts({})
     return products
