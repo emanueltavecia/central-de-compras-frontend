@@ -8,6 +8,7 @@ import {
   Button,
   Modal,
   NumberInput,
+  Select,
   Table,
   Text,
   TextInput,
@@ -25,15 +26,22 @@ import {
 
 interface ProductsTableProps {
   products: Product[]
+  categoriesMap: Map<string, string>
 }
 
 interface EditProductModalProps {
   product: Product
   opened: boolean
   onClose: () => void
+  categoriesMap: Map<string, string>
 }
 
-function EditProductModal({ product, opened, onClose }: EditProductModalProps) {
+function EditProductModal({
+  product,
+  opened,
+  onClose,
+  categoriesMap,
+}: EditProductModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {
@@ -95,7 +103,7 @@ function EditProductModal({ product, opened, onClose }: EditProductModalProps) {
       title="Editar Produto"
       size="lg"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <TextInput
           label="Nome"
           placeholder="Digite o nome do produto"
@@ -112,11 +120,18 @@ function EditProductModal({ product, opened, onClose }: EditProductModalProps) {
           rows={3}
         />
 
-        <TextInput
+        <Select
           label="Categoria"
-          placeholder="Digite a categoria do produto"
-          {...register('categoryId')}
+          placeholder="Selecione uma categoria"
+          data={Array.from(categoriesMap.entries()).map(([id, name]) => ({
+            value: id,
+            label: name,
+          }))}
+          value={product.categoryId || null}
+          onChange={(value) => setValue('categoryId', value || undefined)}
           error={errors.categoryId?.message}
+          searchable
+          clearable
         />
 
         <TextInput
@@ -172,7 +187,7 @@ function EditProductModal({ product, opened, onClose }: EditProductModalProps) {
   )
 }
 
-export function ProductsTable({ products }: ProductsTableProps) {
+export function ProductsTable({ products, categoriesMap }: ProductsTableProps) {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
 
   function formatCurrency(value?: number): string {
@@ -208,7 +223,11 @@ export function ProductsTable({ products }: ProductsTableProps) {
                   </Text>
                 )}
               </td>
-              <td className="pl-8">{product.categoryId || '-'}</td>
+              <td className="pl-8">
+                {product.categoryId
+                  ? categoriesMap.get(product.categoryId) || '-'
+                  : '-'}
+              </td>
               <td className="pl-8">{product.unit}</td>
               <td className="pl-8">{formatCurrency(product.basePrice)}</td>
               <td className="pl-8">{product.availableQuantity}</td>
@@ -240,6 +259,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
           product={editingProduct}
           opened={!!editingProduct}
           onClose={() => setEditingProduct(null)}
+          categoriesMap={categoriesMap}
         />
       )}
     </>

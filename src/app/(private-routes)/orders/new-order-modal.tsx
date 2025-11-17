@@ -131,7 +131,11 @@ export function NewOrderModal({ products }: NewOrderModalProps) {
         title="Novo Pedido"
         size="xl"
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4"
+          noValidate
+        >
           <TextInput
             label="ID da Loja"
             placeholder="Digite o ID da loja"

@@ -111,7 +111,7 @@ export function CategoryModal({
       size="lg"
       centered
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Stack gap="lg">
           <TextInput
             label="Nome"
