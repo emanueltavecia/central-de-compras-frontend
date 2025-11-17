@@ -3,7 +3,7 @@ import { OrgType } from '@/utils/enums'
 interface OrganizationInfoCardProps {
   organizationName: string
   taxId: string
-  type: OrgType
+  type?: OrgType
   active: boolean
 }
 
@@ -13,7 +13,7 @@ export function OrganizationInfoCard({
   type,
   active,
 }: OrganizationInfoCardProps) {
-  const getTypeLabel = (type: OrgType) => {
+  const getTypeLabel = (type?: OrgType) => {
     switch (type) {
       case OrgType.STORE:
         return 'Loja'

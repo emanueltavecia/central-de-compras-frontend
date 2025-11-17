@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import { ROUTE_PERMISSIONS } from './consts'
 import { HeaderActions } from './header-actions'
+import { NavMenu } from './nav-menu'
 import { OrganizationsDropdown } from './organizations-dropdown'
 
 import { getSession } from '@/lib/auth'
@@ -45,26 +46,16 @@ export async function Header() {
             </Link>
 
             <nav className="flex gap-4">
-              {Object.values(ROUTE_PERMISSIONS).map(
-                ({ name, route, permissions }) =>
-                  (!permissions ||
-                    permissions.every((p) =>
-                      user.role.permissions.some(
-                        (userPermission) => userPermission.name === p,
-                      ),
-                    )) &&
-                  (route === '/organizations' ? (
-                    <OrganizationsDropdown key={route} />
-                  ) : (
-                    <Link
-                      key={route}
-                      href={route}
-                      className="text-text-secondary hover:text-primary text-sm font-medium transition-colors"
-                    >
-                      {name}
-                    </Link>
-                  )),
-              )}
+              {Object.values(ROUTE_PERMISSIONS).map((item) => {
+                const hasPermission =
+                  !item.roles || item.roles.some((p) => user.role.name === p)
+
+                if (!hasPermission) {
+                  return null
+                }
+
+                return <NavMenu key={item.route} item={item} />
+              })}
             </nav>
           </div>
 

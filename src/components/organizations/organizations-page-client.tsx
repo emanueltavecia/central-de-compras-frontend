@@ -45,6 +45,7 @@ import {
   organizationSchema,
   type OrganizationInput,
 } from '@/utils/schemas/organization'
+import { AxiosError } from 'axios'
 
 type Variant = 'stores' | 'suppliers'
 
@@ -82,7 +83,7 @@ export function OrganizationsPageClient({
   const [editOpen, setEditOpen] = useState<Organization | null>(null)
   const [usersOpen, setUsersOpen] = useState<Organization | null>(null)
   const [addUserOpen, setAddUserOpen] = useState(false)
-  const [editUserOpen, setEditUserOpen] = useState<any | null>(null)
+  const [editUserOpen, setEditUserOpen] = useState<User | null>(null)
   const [deleteOpen, setDeleteOpen] = useState<Organization | null>(null)
   const [deleteUserOpen, setDeleteUserOpen] = useState<string | null>(null)
   const [credentialsOpen, setCredentialsOpen] = useState(false)
@@ -150,12 +151,12 @@ export function OrganizationsPageClient({
       setAddOpen(false)
       addForm.reset()
       await loadOrganizations()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error creating organization:', error)
       notifications.show({
         title: 'Erro',
         message:
-          error.message ||
+          (error as AxiosError)?.message ||
           `Não foi possível criar o ${labels.entity.toLowerCase()}`,
         color: 'red',
       })
@@ -183,12 +184,12 @@ export function OrganizationsPageClient({
       setEditOpen(null)
       editForm.reset()
       await loadOrganizations()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating organization:', error)
       notifications.show({
         title: 'Erro',
         message:
-          error.message ||
+          (error as AxiosError)?.message ||
           `Não foi possível atualizar o ${labels.entity.toLowerCase()}`,
         color: 'red',
       })
@@ -204,12 +205,12 @@ export function OrganizationsPageClient({
         color: 'green',
       })
       await loadOrganizations()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error inactivating organization:', error)
       notifications.show({
         title: 'Erro',
         message:
-          error.message ||
+          (error as AxiosError)?.message ||
           `Não foi possível inativar o ${labels.entity.toLowerCase()}`,
         color: 'red',
       })
@@ -225,12 +226,12 @@ export function OrganizationsPageClient({
         color: 'green',
       })
       await loadOrganizations()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error activating organization:', error)
       notifications.show({
         title: 'Erro',
         message:
-          error.message ||
+          (error as AxiosError)?.message ||
           `Não foi possível ativar o ${labels.entity.toLowerCase()}`,
         color: 'red',
       })
@@ -247,12 +248,12 @@ export function OrganizationsPageClient({
       })
       setDeleteOpen(null)
       await loadOrganizations()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting organization:', error)
       notifications.show({
         title: 'Erro',
         message:
-          error.message ||
+          (error as AxiosError)?.message ||
           `Não foi possível excluir o ${labels.entity.toLowerCase()}`,
         color: 'red',
       })
@@ -420,12 +421,12 @@ export function OrganizationsPageClient({
       if (usersOpen) {
         await loadUsers(usersOpen.id)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error toggling user status:', error)
       notifications.show({
         title: 'Erro',
         message:
-          error.message || 'Não foi possível alterar o status do usuário',
+          (error as AxiosError)?.message || 'Não foi possível alterar o status do usuário',
         color: 'red',
       })
     }
@@ -459,11 +460,11 @@ export function OrganizationsPageClient({
       if (usersOpen) {
         await loadUsers(usersOpen.id)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting user:', error)
       notifications.show({
         title: 'Erro',
-        message: error.message || 'Não foi possível excluir o usuário',
+        message: (error as AxiosError)?.message || 'Não foi possível excluir o usuário',
         color: 'red',
       })
     }

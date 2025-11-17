@@ -6,7 +6,7 @@ import { OrganizationInfoCard } from '@/components/profile/organization-info-car
 import { PersonalInfoCard } from '@/components/profile/personal-info-card'
 import { ProfileHeader } from '@/components/profile/profile-header'
 import { getSession } from '@/lib/auth'
-import { UserRole } from '@/utils/enums'
+import { OrgType, UserRole } from '@/utils/enums'
 
 export default async function ProfilePage() {
   const { user } = await getSession()
@@ -47,7 +47,7 @@ export default async function ProfilePage() {
                 <OrganizationInfoCard
                   organizationName={user.organization?.legalName || 'N/A'}
                   taxId={user.organization?.taxId || 'N/A'}
-                  type={user.organization?.type || ('store' as any)}
+                  type={user.organization?.type}
                   active={user.organization?.active ?? false}
                 />
               </div>
