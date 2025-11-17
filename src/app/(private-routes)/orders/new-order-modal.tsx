@@ -186,19 +186,19 @@ export function NewOrderModal({ products, userRole }: NewOrderModalProps) {
 
             {items.length > 0 && (
               <Table>
-                <thead>
-                  <tr>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th>Produto</Table.Th>
+                    <Table.Th>Quantidade</Table.Th>
+                    <Table.Th>Ações</Table.Th>
+                  </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
                   {items.map((item, index) => (
-                    <tr key={index}>
-                      <td>{getProductName(item.productId)}</td>
-                      <td>{item.quantity}</td>
-                      <td>
+                    <Table.Tr key={index}>
+                      <Table.Td>{getProductName(item.productId)}</Table.Td>
+                      <Table.Td>{item.quantity}</Table.Td>
+                      <Table.Td>
                         <Button
                           size="xs"
                           variant="light"
@@ -207,10 +207,10 @@ export function NewOrderModal({ products, userRole }: NewOrderModalProps) {
                         >
                           Remover
                         </Button>
-                      </td>
-                    </tr>
+                      </Table.Td>
+                    </Table.Tr>
                   ))}
-                </tbody>
+                </Table.Tbody>
               </Table>
             )}
           </div>
