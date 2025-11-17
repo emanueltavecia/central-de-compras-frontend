@@ -15,4 +15,7 @@ export const CACHE_TAGS = {
     WALLET: 'cashback-wallet',
     TRANSACTIONS: 'cashback-transactions',
   },
+  PAYMENT_CONDITIONS: {
+    LIST: 'payment-conditions-list',
+  },
 } as const
