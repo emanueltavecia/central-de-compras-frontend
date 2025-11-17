@@ -1,7 +1,8 @@
 import Link from 'next/link'
 
 import { ROUTE_PERMISSIONS } from './consts'
-import { LogoutButton } from './logout-button'
+import { HeaderActions } from './header-actions'
+import { OrganizationsDropdown } from './organizations-dropdown'
 
 import { getSession } from '@/lib/auth'
 
@@ -51,7 +52,10 @@ export async function Header() {
                       user.role.permissions.some(
                         (userPermission) => userPermission.name === p,
                       ),
-                    )) && (
+                    )) &&
+                  (route === '/organizations' ? (
+                    <OrganizationsDropdown key={route} />
+                  ) : (
                     <Link
                       key={route}
                       href={route}
@@ -59,12 +63,12 @@ export async function Header() {
                     >
                       {name}
                     </Link>
-                  ),
+                  )),
               )}
             </nav>
           </div>
 
-          <LogoutButton />
+          <HeaderActions user={user} />
         </div>
       </div>
     </header>

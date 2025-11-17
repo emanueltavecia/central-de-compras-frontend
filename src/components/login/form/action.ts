@@ -2,7 +2,6 @@
 
 import { createSession } from '@/lib/auth/session'
 import { authService } from '@/sdk/auth'
-import { setAuthToken } from '@/sdk/client'
 import type { LoginFormData } from '@/utils/schemas/login'
 
 interface LoginActionResponse {
@@ -16,7 +15,6 @@ export async function login(
   try {
     const response = await authService.login(credentials)
     await createSession(response.token, response.user)
-    setAuthToken(response.token)
 
     return {
       isSuccess: true,

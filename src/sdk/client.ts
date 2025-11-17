@@ -9,11 +9,6 @@ export const api = axios.create({
   },
 })
 
-export async function setAuthToken(token: string) {
-  'use server'
-  api.defaults.headers.common.Authorization = `Bearer ${token}`
-}
-
 export function clearAuthToken() {
   delete api.defaults.headers.common.Authorization
 }
