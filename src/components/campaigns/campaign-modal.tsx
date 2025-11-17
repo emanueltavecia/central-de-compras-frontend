@@ -361,13 +361,9 @@ export function CampaignModal({
                 placeholder="Selecione a data de início"
                 valueFormat="DD/MM/YYYY"
                 clearable
-                value={field.value ? new Date(field.value) : null}
+                value={field.value || null}
                 onChange={(date) => {
-                  if (date && typeof date === 'object') {
-                    field.onChange((date as unknown as Date).toISOString())
-                  } else {
-                    field.onChange(null)
-                  }
+                  field.onChange(date || null)
                 }}
                 error={errors.startAt?.message}
               />
@@ -383,13 +379,9 @@ export function CampaignModal({
                 placeholder="Selecione a data de término"
                 valueFormat="DD/MM/YYYY"
                 clearable
-                value={field.value ? new Date(field.value) : null}
+                value={field.value || null}
                 onChange={(date) => {
-                  if (date && typeof date === 'object') {
-                    field.onChange((date as unknown as Date).toISOString())
-                  } else {
-                    field.onChange(null)
-                  }
+                  field.onChange(date || null)
                 }}
                 error={errors.endAt?.message}
               />
