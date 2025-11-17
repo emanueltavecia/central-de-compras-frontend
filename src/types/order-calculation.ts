@@ -5,7 +5,6 @@ export interface OrderCalculationItem {
   unitPrice: number
   unitPriceAdjusted: number
   totalPrice: number
-  appliedCashbackAmount?: number
 }
 
 export interface SupplierStateConditionAdjustment {

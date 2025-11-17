@@ -3,14 +3,7 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Button,
-  Modal,
-  NumberInput,
-  Select,
-  Table,
-  TextInput,
-} from '@mantine/core'
+import { Button, Modal, NumberInput, Select, Table } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useForm } from 'react-hook-form'
 
@@ -44,13 +37,7 @@ export function NewOrderModal({ products, userRole }: NewOrderModalProps) {
     quantity: 1,
   })
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
-  } = useForm<CreateOrderInput>({
+  const { handleSubmit, reset } = useForm<CreateOrderInput>({
     resolver: zodResolver(createOrderSchema),
   })
 
@@ -141,14 +128,6 @@ export function NewOrderModal({ products, userRole }: NewOrderModalProps) {
           className="space-y-4"
           noValidate
         >
-          <TextInput
-            label="ID da Loja"
-            placeholder="Digite o ID da loja"
-            {...register('storeOrgId')}
-            error={errors.storeOrgId?.message}
-            required
-          />
-
           <div className="space-y-2">
             <label className="text-sm font-medium">Itens do Pedido</label>
 
@@ -214,24 +193,6 @@ export function NewOrderModal({ products, userRole }: NewOrderModalProps) {
               </Table>
             )}
           </div>
-
-          <NumberInput
-            label="Custo de Envio (Opcional)"
-            placeholder="0.00"
-            decimalScale={2}
-            fixedDecimalScale
-            prefix="R$ "
-            min={0}
-            onChange={(value) => setValue('shippingCost', Number(value) || 0)}
-            error={errors.shippingCost?.message}
-          />
-
-          <TextInput
-            label="ID do Endereço de Envio (Opcional)"
-            placeholder="Digite o ID do endereço"
-            {...register('shippingAddressId')}
-            error={errors.shippingAddressId?.message}
-          />
 
           <div className="flex justify-end gap-2 pt-4">
             <Button
