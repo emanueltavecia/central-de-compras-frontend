@@ -6,10 +6,14 @@ import { OrdersFilters } from './orders-filters'
 import { OrdersTable } from './orders-table'
 
 import { getProducts } from '@/app/(private-routes)/products/action'
+import { getSession } from '@/lib/auth/session'
 
 export default async function OrdersPage() {
-  const orders = await getOrders()
-  const products = await getProducts()
+  const [orders, products, { user }] = await Promise.all([
+    getOrders(),
+    getProducts(),
+    getSession(),
+  ])
 
   return (
     <div className="flex gap-6 p-6">
@@ -17,7 +21,7 @@ export default async function OrdersPage() {
         <Stack gap="lg">
           <Group justify="space-between" align="center">
             <Title order={2}>Pedidos</Title>
-            <NewOrderModal products={products} />
+            <NewOrderModal products={products} userRole={user?.role.name} />
           </Group>
 
           <Card shadow="sm" padding="lg" radius="md" withBorder>

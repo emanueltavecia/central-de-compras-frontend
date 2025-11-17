@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form'
 import { createOrder } from './action'
 
 import type { Product } from '@/types'
+import { UserRole } from '@/utils/enums'
 import {
   createOrderSchema,
   type CreateOrderInput,
@@ -25,9 +26,13 @@ import {
 
 interface NewOrderModalProps {
   products: Product[]
+  userRole?: UserRole
 }
 
-export function NewOrderModal({ products }: NewOrderModalProps) {
+export function NewOrderModal({ products, userRole }: NewOrderModalProps) {
+  if (userRole !== UserRole.STORE) {
+    return null
+  }
   const [opened, setOpened] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [items, setItems] = useState<OrderItemInput[]>([])
