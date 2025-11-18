@@ -49,4 +49,9 @@ export const ROUTE_PERMISSIONS: RoutePermission = {
     route: '/products',
     roles: [UserRole.SUPPLIER],
   },
+  categories: {
+    name: 'Categorias',
+    route: '/categories',
+    roles: [UserRole.SUPPLIER],
+  },
 }
