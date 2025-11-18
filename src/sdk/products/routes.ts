@@ -1,3 +1,4 @@
 export const PRODUCTS_ROUTES = {
-  GET_PRODUCTS: '/products',
-} as const
+  BASE: '/products',
+  BY_ID: (id: string) => `/products/${id}`,
+}
