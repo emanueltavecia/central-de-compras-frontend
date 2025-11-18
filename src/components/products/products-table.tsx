@@ -8,6 +8,7 @@ import {
   Button,
   Modal,
   NumberInput,
+  Select,
   Table,
   Text,
   TextInput,
@@ -25,15 +26,22 @@ import {
 
 interface ProductsTableProps {
   products: Product[]
+  categoriesMap: Map<string, string>
 }
 
 interface EditProductModalProps {
   product: Product
   opened: boolean
   onClose: () => void
+  categoriesMap: Map<string, string>
 }
 
-function EditProductModal({ product, opened, onClose }: EditProductModalProps) {
+function EditProductModal({
+  product,
+  opened,
+  onClose,
+  categoriesMap,
+}: EditProductModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {
@@ -95,7 +103,7 @@ function EditProductModal({ product, opened, onClose }: EditProductModalProps) {
       title="Editar Produto"
       size="lg"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <TextInput
           label="Nome"
           placeholder="Digite o nome do produto"
@@ -112,11 +120,18 @@ function EditProductModal({ product, opened, onClose }: EditProductModalProps) {
           rows={3}
         />
 
-        <TextInput
+        <Select
           label="Categoria"
-          placeholder="Digite a categoria do produto"
-          {...register('categoryId')}
+          placeholder="Selecione uma categoria"
+          data={Array.from(categoriesMap.entries()).map(([id, name]) => ({
+            value: id,
+            label: name,
+          }))}
+          value={product.categoryId || null}
+          onChange={(value) => setValue('categoryId', value || undefined)}
           error={errors.categoryId?.message}
+          searchable
+          clearable
         />
 
         <TextInput
@@ -172,7 +187,7 @@ function EditProductModal({ product, opened, onClose }: EditProductModalProps) {
   )
 }
 
-export function ProductsTable({ products }: ProductsTableProps) {
+export function ProductsTable({ products, categoriesMap }: ProductsTableProps) {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
 
   function formatCurrency(value?: number): string {
@@ -186,41 +201,47 @@ export function ProductsTable({ products }: ProductsTableProps) {
   return (
     <>
       <Table striped highlightOnHover withTableBorder withColumnBorders>
-        <thead>
-          <tr>
-            <th className="pl-8">Nome</th>
-            <th className="pl-8">Categoria</th>
-            <th className="pl-8">Unidade</th>
-            <th className="pl-8">Preço Base</th>
-            <th className="pl-8">Quantidade</th>
-            <th className="pl-8">Status</th>
-            <th className="pl-8">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th className="pl-8">Nome</Table.Th>
+            <Table.Th className="pl-8">Categoria</Table.Th>
+            <Table.Th className="pl-8">Unidade</Table.Th>
+            <Table.Th className="pl-8">Preço Base</Table.Th>
+            <Table.Th className="pl-8">Quantidade</Table.Th>
+            <Table.Th className="pl-8">Status</Table.Th>
+            <Table.Th className="pl-8">Ações</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
           {products.map((product) => (
-            <tr key={product.id}>
-              <td className="pl-8">
+            <Table.Tr key={product.id}>
+              <Table.Td className="pl-8">
                 <Text fw={500}>{product.name}</Text>
                 {product.description && (
                   <Text size="xs" c="dimmed">
                     {product.description}
                   </Text>
                 )}
-              </td>
-              <td className="pl-8">{product.categoryId || '-'}</td>
-              <td className="pl-8">{product.unit}</td>
-              <td className="pl-8">{formatCurrency(product.basePrice)}</td>
-              <td className="pl-8">{product.availableQuantity}</td>
-              <td className="pl-8">
+              </Table.Td>
+              <Table.Td className="pl-8">
+                {product.categoryId
+                  ? categoriesMap.get(product.categoryId) || '-'
+                  : '-'}
+              </Table.Td>
+              <Table.Td className="pl-8">{product.unit}</Table.Td>
+              <Table.Td className="pl-8">
+                {formatCurrency(product.basePrice)}
+              </Table.Td>
+              <Table.Td className="pl-8">{product.availableQuantity}</Table.Td>
+              <Table.Td className="pl-8">
                 <Badge
                   variant="light"
                   color={product.active ? 'green' : 'gray'}
                 >
                   {product.active ? 'ATIVO' : 'INATIVO'}
                 </Badge>
-              </td>
-              <td className="pl-8">
+              </Table.Td>
+              <Table.Td className="pl-8">
                 <Button
                   variant="light"
                   color="blue"
@@ -229,10 +250,10 @@ export function ProductsTable({ products }: ProductsTableProps) {
                 >
                   Editar
                 </Button>
-              </td>
-            </tr>
+              </Table.Td>
+            </Table.Tr>
           ))}
-        </tbody>
+        </Table.Tbody>
       </Table>
 
       {editingProduct && (
@@ -240,6 +261,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
           product={editingProduct}
           opened={!!editingProduct}
           onClose={() => setEditingProduct(null)}
+          categoriesMap={categoriesMap}
         />
       )}
     </>

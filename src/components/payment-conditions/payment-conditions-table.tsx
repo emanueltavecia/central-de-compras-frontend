@@ -117,9 +117,7 @@ export function PaymentConditionsTable({
                   className="sticky right-0 bg-white drop-shadow-[-8px_0_16px_rgba(0,0,0,0.1)] lg:static lg:drop-shadow-none"
                 >
                   <div className="flex justify-center">
-                    <PaymentConditionActionsMenu
-                      paymentCondition={condition}
-                    />
+                    <PaymentConditionActionsMenu paymentCondition={condition} />
                   </div>
                 </Table.Td>
               </Table.Tr>

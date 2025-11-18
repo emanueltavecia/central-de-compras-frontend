@@ -2,7 +2,13 @@ import { ORDERS_ROUTES } from './routes'
 
 import { api } from '../client'
 
-import type { Order, OrderFilters } from '@/types'
+import type {
+  Order,
+  OrderCalculationRequest,
+  OrderCalculationResponse,
+  OrderFilters,
+  SuccessResponse,
+} from '@/types'
 import type { CreateOrderInput } from '@/utils/schemas/orders'
 
 export const ordersService = {
@@ -18,8 +24,20 @@ export const ordersService = {
     return data.data
   },
 
-  async createOrder(params: CreateOrderInput): Promise<Order> {
+  async createOrder(
+    params: CreateOrderInput & { storeOrgId: string },
+  ): Promise<Order> {
     const { data } = await api.post(ORDERS_ROUTES.BASE, params)
+    return data.data
+  },
+
+  async calculateOrder(
+    params: OrderCalculationRequest,
+  ): Promise<OrderCalculationResponse> {
+    const { data } = await api.post<SuccessResponse<OrderCalculationResponse>>(
+      ORDERS_ROUTES.CALCULATE,
+      params,
+    )
     return data.data
   },
 }

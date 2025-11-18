@@ -48,9 +48,7 @@ export default async function PaymentConditionsPage() {
                 Nenhuma condição de pagamento inativa encontrada
               </Text>
             ) : (
-              <PaymentConditionsTable
-                paymentConditions={inactiveConditions}
-              />
+              <PaymentConditionsTable paymentConditions={inactiveConditions} />
             )}
           </Card>
         </div>

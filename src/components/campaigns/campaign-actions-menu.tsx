@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 
-import { useRouter } from 'next/navigation'
-
 import { ActionIcon, Menu } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { MoreVertical, Trash2 } from 'lucide-react'
@@ -19,7 +17,6 @@ interface CampaignActionsMenuProps {
 }
 
 export function CampaignActionsMenu({ campaign }: CampaignActionsMenuProps) {
-  const router = useRouter()
   const [modalOpened, setModalOpened] = useState(false)
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -35,7 +32,7 @@ export function CampaignActionsMenu({ campaign }: CampaignActionsMenuProps) {
           message: result.message,
           color: 'green',
         })
-        router.refresh()
+        // router.refresh()
       } else {
         notifications.show({
           title: 'Erro',
@@ -100,7 +97,7 @@ export function CampaignActionsMenu({ campaign }: CampaignActionsMenuProps) {
         opened={modalOpened}
         onClose={() => {
           setModalOpened(false)
-          router.refresh()
+          // router.refresh()
         }}
         campaign={campaign}
       />

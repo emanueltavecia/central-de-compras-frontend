@@ -1,16 +1,18 @@
 'use server'
 
-import { cacheTag, revalidateTag } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 
+import { getSession } from '@/lib/auth/session'
 import { ordersService } from '@/sdk/orders'
-import type { Order } from '@/types'
+import type {
+  Order,
+  OrderCalculationRequest,
+  OrderCalculationResponse,
+} from '@/types'
 import { CACHE_TAGS } from '@/utils/constants/cache-tags'
 import type { CreateOrderInput } from '@/utils/schemas/orders'
 
 export async function getOrders(): Promise<Order[]> {
-  'use cache'
-  cacheTag(CACHE_TAGS.ORDERS.LIST)
-
   try {
     const orders = await ordersService.getOrders({})
     return orders
@@ -24,7 +26,23 @@ export async function createOrder(
   data: CreateOrderInput,
 ): Promise<{ success: boolean; error?: string; order?: Order }> {
   try {
-    const order = await ordersService.createOrder(data)
+    const { user } = await getSession()
+
+    if (!user?.organizationId) {
+      return {
+        success: false,
+        error: 'Usuário não está associado a uma organização.',
+      }
+    }
+
+    const orderData = {
+      ...data,
+      storeOrgId: user.organizationId,
+    }
+
+    const order = await ordersService.createOrder(
+      orderData as CreateOrderInput & { storeOrgId: string },
+    )
     revalidateTag(CACHE_TAGS.ORDERS.LIST, { expire: 0 })
 
     return { success: true, order }
@@ -33,6 +51,38 @@ export async function createOrder(
     return {
       success: false,
       error: 'Erro ao criar pedido. Tente novamente.',
+    }
+  }
+}
+
+export async function calculateOrder(
+  params: Omit<OrderCalculationRequest, 'storeOrgId'>,
+): Promise<{
+  success: boolean
+  error?: string
+  calculation?: OrderCalculationResponse
+}> {
+  try {
+    const { user } = await getSession()
+
+    if (!user?.organizationId) {
+      return {
+        success: false,
+        error: 'Usuário não está associado a uma organização.',
+      }
+    }
+
+    const calculation = await ordersService.calculateOrder({
+      ...params,
+      storeOrgId: user.organizationId,
+    })
+
+    return { success: true, calculation }
+  } catch (error) {
+    console.error('Erro ao calcular pedido:', error)
+    return {
+      success: false,
+      error: 'Erro ao calcular pedido.',
     }
   }
 }

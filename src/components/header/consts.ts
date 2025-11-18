@@ -38,6 +38,18 @@ export const ROUTE_PERMISSIONS: RoutePermission = {
     name: 'Organizações',
     route: '/organizations',
     roles: [UserRole.ADMIN],
+    submenu: [
+      {
+        name: 'Lojas',
+        route: '/organizations/stores',
+        roles: [UserRole.ADMIN],
+      },
+      {
+        name: 'Fornecedores',
+        route: '/organizations/suppliers',
+        roles: [UserRole.ADMIN],
+      },
+    ],
   },
   paymentConditions: {
     name: 'Condições de Pagamento',

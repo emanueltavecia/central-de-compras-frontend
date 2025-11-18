@@ -1,4 +1,4 @@
-import { getSession } from '@/lib/auth/session'
+import { getSession } from '@/lib/auth'
 import { setAuthToken } from '@/sdk/client'
 
 export async function TokenInitializer() {

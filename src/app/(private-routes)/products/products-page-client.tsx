@@ -1,22 +1,32 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Modal, NumberInput, TextInput, Textarea } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
-import { useForm } from 'react-hook-form'
-
-import { createProduct } from './action'
-
 import {
-  createProductSchema,
-  type CreateProductInput,
+  Button,
+  Modal,
+  NumberInput,
+  Select,
+  TextInput,
+  Textarea,
+} from '@mantine/core'
+import { notifications } from '@mantine/notifications'
+import { useForm, Controller } from 'react-hook-form'
+
+import { createProduct, getCategories } from './action'
+
+import type { Category } from '@/types'
+import {
+  createProductFormSchema,
+  type CreateProductFormInput,
 } from '@/utils/schemas/products'
 
 export function ProductsPageClient() {
   const [opened, setOpened] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loadingCategories, setLoadingCategories] = useState(true)
 
   const {
     register,
@@ -24,11 +34,31 @@ export function ProductsPageClient() {
     formState: { errors },
     reset,
     setValue,
-  } = useForm<CreateProductInput>({
-    resolver: zodResolver(createProductSchema),
+    control,
+  } = useForm<CreateProductFormInput>({
+    resolver: zodResolver(createProductFormSchema),
   })
 
-  const onSubmit = async (data: CreateProductInput) => {
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const data = await getCategories()
+        setCategories(data)
+      } catch (error) {
+        notifications.show({
+          title: 'Erro',
+          message: 'Erro ao carregar categorias',
+          color: 'red',
+        })
+      } finally {
+        setLoadingCategories(false)
+      }
+    }
+
+    fetchCategories()
+  }, [])
+
+  const onSubmit = async (data: CreateProductFormInput) => {
     setIsSubmitting(true)
 
     try {
@@ -73,7 +103,11 @@ export function ProductsPageClient() {
         title="Novo Produto"
         size="lg"
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4"
+          noValidate
+        >
           <TextInput
             label="Nome"
             placeholder="Digite o nome do produto"
@@ -90,11 +124,24 @@ export function ProductsPageClient() {
             rows={3}
           />
 
-          <TextInput
-            label="Categoria"
-            placeholder="Digite a categoria do produto"
-            {...register('categoryId')}
-            error={errors.categoryId?.message}
+          <Controller
+            name="categoryId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                label="Categoria"
+                placeholder="Selecione uma categoria"
+                data={categories.map((category) => ({
+                  value: category.id,
+                  label: category.name,
+                }))}
+                error={errors.categoryId?.message}
+                searchable
+                clearable
+                disabled={loadingCategories}
+              />
+            )}
           />
 
           <TextInput

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import { Badge, Button, Table, Text } from '@mantine/core'
 
@@ -60,32 +60,34 @@ export function OrdersTable({ orders }: OrdersTableProps) {
 
   return (
     <Table striped highlightOnHover withTableBorder withColumnBorders>
-      <thead>
-        <tr>
-          <th className="pl-8">Número Pedido</th>
-          <th className="pl-8">Nome da Loja</th>
-          <th className="pl-8">Data Pedido</th>
-          <th className="pl-8">Valor Total</th>
-          <th className="pl-8">Status</th>
-          <th className="pl-8">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th className="pl-8">Número Pedido</Table.Th>
+          <Table.Th className="pl-8">Nome da Loja</Table.Th>
+          <Table.Th className="pl-8">Data Pedido</Table.Th>
+          <Table.Th className="pl-8">Valor Total</Table.Th>
+          <Table.Th className="pl-8">Status</Table.Th>
+          <Table.Th className="pl-8">Ações</Table.Th>
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>
         {orders.map((order) => (
-          <>
-            <tr key={order.id}>
-              <td className="pl-8">
+          <Fragment key={order.id}>
+            <Table.Tr key={order.id}>
+              <Table.Td className="pl-8">
                 <Text fw={500}>{order.id.slice(0, 5)}</Text>
-              </td>
-              <td className="pl-8">{getStoreName(order)}</td>
-              <td className="pl-8">{formatDate(order.placedAt)}</td>
-              <td className="pl-8">{formatCurrency(order.totalAmount)}</td>
-              <td className="pl-8">
+              </Table.Td>
+              <Table.Td className="pl-8">{getStoreName(order)}</Table.Td>
+              <Table.Td className="pl-8">{formatDate(order.placedAt)}</Table.Td>
+              <Table.Td className="pl-8">
+                {formatCurrency(order.totalAmount)}
+              </Table.Td>
+              <Table.Td className="pl-8">
                 <Badge variant="light" color={getStatusColor(order.status)}>
                   {getStatusLabel(order.status)}
                 </Badge>
-              </td>
-              <td className="pl-8">
+              </Table.Td>
+              <Table.Td className="pl-8">
                 <Button
                   variant="subtle"
                   size="xs"
@@ -97,11 +99,11 @@ export function OrdersTable({ orders }: OrdersTableProps) {
                 >
                   {expandedOrder === order.id ? '▲' : '▼'}
                 </Button>
-              </td>
-            </tr>
+              </Table.Td>
+            </Table.Tr>
             {expandedOrder === order.id && (
-              <tr>
-                <td colSpan={6} className="bg-gray-50 p-4">
+              <Table.Tr>
+                <Table.Td colSpan={6} className="bg-gray-50 p-4">
                   <div className="space-y-2">
                     <Text size="sm" fw={600}>
                       Detalhes do Pedido
@@ -146,34 +148,38 @@ export function OrdersTable({ orders }: OrdersTableProps) {
                           Itens:
                         </Text>
                         <Table>
-                          <thead>
-                            <tr>
-                              <th>Produto</th>
-                              <th>Qtd</th>
-                              <th>Preço Unit.</th>
-                              <th>Total</th>
-                            </tr>
-                          </thead>
-                          <tbody>
+                          <Table.Thead>
+                            <Table.Tr>
+                              <Table.Th>Produto</Table.Th>
+                              <Table.Th>Qtd</Table.Th>
+                              <Table.Th>Preço Unit.</Table.Th>
+                              <Table.Th>Total</Table.Th>
+                            </Table.Tr>
+                          </Table.Thead>
+                          <Table.Tbody>
                             {order.items.map((item) => (
-                              <tr key={item.id}>
-                                <td>{item.productNameSnapshot}</td>
-                                <td>{item.quantity}</td>
-                                <td>{formatCurrency(item.unitPrice)}</td>
-                                <td>{formatCurrency(item.totalPrice)}</td>
-                              </tr>
+                              <Table.Tr key={item.id}>
+                                <Table.Td>{item.productNameSnapshot}</Table.Td>
+                                <Table.Td>{item.quantity}</Table.Td>
+                                <Table.Td>
+                                  {formatCurrency(item.unitPrice)}
+                                </Table.Td>
+                                <Table.Td>
+                                  {formatCurrency(item.totalPrice)}
+                                </Table.Td>
+                              </Table.Tr>
                             ))}
-                          </tbody>
+                          </Table.Tbody>
                         </Table>
                       </div>
                     )}
                   </div>
-                </td>
-              </tr>
+                </Table.Td>
+              </Table.Tr>
             )}
-          </>
+          </Fragment>
         ))}
-      </tbody>
+      </Table.Tbody>
     </Table>
   )
 }

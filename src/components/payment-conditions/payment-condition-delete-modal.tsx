@@ -54,7 +54,12 @@ export function PaymentConditionDeleteModal({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Confirmar Exclusão" centered>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title="Confirmar Exclusão"
+      centered
+    >
       <Text size="sm" mb="md">
         Tem certeza que deseja excluir a condição de pagamento{' '}
         <strong>{paymentCondition.name || 'sem nome'}</strong>? Esta ação não

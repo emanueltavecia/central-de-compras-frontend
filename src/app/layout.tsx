@@ -7,12 +7,15 @@ import {
   MantineProvider,
   mantineHtmlProps,
 } from '@mantine/core'
+import { DatesProvider } from '@mantine/dates'
 import { Notifications } from '@mantine/notifications'
 import type { Metadata } from 'next'
 
 import { TokenInitializer } from '@/components/auth/token-initializer'
 
+import 'dayjs/locale/pt-br'
 import '@mantine/core/styles.css'
+import '@mantine/dates/styles.css'
 import '@mantine/notifications/styles.css'
 import './globals.css'
 
@@ -41,8 +44,10 @@ export default function RootLayout({
           <TokenInitializer />
         </Suspense>
         <MantineProvider>
-          <Notifications position="top-right" />
-          {children}
+          <DatesProvider settings={{ locale: 'pt-br' }}>
+            <Notifications position="top-right" />
+            {children}
+          </DatesProvider>
         </MantineProvider>
       </body>
     </html>

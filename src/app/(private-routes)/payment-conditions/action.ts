@@ -21,6 +21,27 @@ export async function getPaymentConditions() {
   }
 }
 
+export async function getPaymentConditionsBySupplier(supplierOrgId: string) {
+  try {
+    if (!supplierOrgId) {
+      return []
+    }
+
+    const paymentConditions =
+      await paymentConditionsService.getPaymentConditions({
+        supplierOrgId,
+        status: true,
+      })
+    return paymentConditions
+  } catch (error) {
+    console.error(
+      'Erro ao buscar condições de pagamento por fornecedor:',
+      error,
+    )
+    return []
+  }
+}
+
 export async function createPaymentCondition(data: PaymentConditionFormInput) {
   try {
     const { user } = await getSession()

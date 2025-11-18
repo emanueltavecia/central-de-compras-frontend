@@ -2,8 +2,11 @@
 
 import { revalidateTag } from 'next/cache'
 
+import dayjs from 'dayjs'
+
 import { getSession } from '@/lib/auth/session'
 import { campaignsService } from '@/sdk/campaigns'
+import { Campaign } from '@/types'
 import { CACHE_TAGS } from '@/utils/constants/cache-tags'
 import {
   campaignSchema,
@@ -13,7 +16,15 @@ import {
 export async function getCampaigns() {
   try {
     const campaigns = await campaignsService.getCampaigns({})
-    return campaigns
+    return campaigns.map((c) => ({
+      ...c,
+      startAt: c.startAt
+        ? dayjs(c.startAt.split('T')[0]).add(3, 'hour').toISOString()
+        : undefined,
+      endAt: c.endAt
+        ? dayjs(c.endAt.split('T')[0]).add(3, 'hour').toISOString()
+        : undefined,
+    })) as Campaign[]
   } catch (error) {
     console.error('Erro ao buscar campanhas:', error)
     return []
