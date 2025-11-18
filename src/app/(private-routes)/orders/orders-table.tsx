@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import { Badge, Button, Table, Text } from '@mantine/core'
 
@@ -72,7 +72,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
       </Table.Thead>
       <Table.Tbody>
         {orders.map((order) => (
-          <>
+          <Fragment key={order.id}>
             <Table.Tr key={order.id}>
               <Table.Td className="pl-8">
                 <Text fw={500}>{order.id.slice(0, 5)}</Text>
@@ -177,7 +177,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
                 </Table.Td>
               </Table.Tr>
             )}
-          </>
+          </Fragment>
         ))}
       </Table.Tbody>
     </Table>
