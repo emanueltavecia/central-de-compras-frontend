@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios'
 
 import { logout } from '@/lib/auth'
+import { ErrorResponse, ValidationError } from '@/types'
 import { COOKIE_NAMES } from '@/utils/constants/cookie-names'
 
 export const api = axios.create({
@@ -34,12 +35,13 @@ async function getTokenFromCookies(): Promise<string | null> {
 
 api.interceptors.response.use(
   (response) => response,
-  async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & {
-      _retry?: boolean
-    }
+  async (originalError: AxiosError) => {
+    const originalRequest =
+      originalError.config as InternalAxiosRequestConfig & {
+        _retry?: boolean
+      }
 
-    if (error.response?.status === 401) {
+    if (originalError.response?.status === 401) {
       if (
         originalRequest.method?.toLowerCase() === 'get' &&
         !originalRequest._retry
@@ -54,6 +56,21 @@ api.interceptors.response.use(
       }
 
       logout()
+    }
+
+    const errorData = originalError.response?.data as ErrorResponse
+
+    const firstValidationError = (
+      errorData?.error as {
+        validationErrors: ValidationError[]
+      }
+    )?.validationErrors?.[0]
+
+    const error = {
+      ...originalError,
+      message: firstValidationError
+        ? `${firstValidationError?.field}: ${firstValidationError?.message}`
+        : errorData?.message || originalError.message,
     }
 
     return Promise.reject(error)

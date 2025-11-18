@@ -586,7 +586,6 @@ export function OrganizationsPageClient({
               <Table.Th>Nome</Table.Th>
               <Table.Th>Telefone</Table.Th>
               <Table.Th>Email</Table.Th>
-              <Table.Th>Senha</Table.Th>
               <Table.Th>Status</Table.Th>
               <Table.Th>Ações</Table.Th>
             </Table.Tr>
@@ -604,9 +603,6 @@ export function OrganizationsPageClient({
                 </Table.Td>
                 <Table.Td>
                   <Text fz="sm">{user.email}</Text>
-                </Table.Td>
-                <Table.Td>
-                  <Text fz="sm">{user.passwordPlain || '-'}</Text>
                 </Table.Td>
                 <Table.Td>
                   <Text
@@ -656,7 +652,6 @@ export function OrganizationsPageClient({
                               fullName: user.fullName || '',
                               email: user.email,
                               phone: user.phone || '',
-                              password: user.passwordPlain || '',
                             })
                           }}
                         >

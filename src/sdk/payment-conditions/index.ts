@@ -1,3 +1,9 @@
+import { AxiosError } from 'axios'
+
+import { PAYMENT_CONDITIONS_ROUTES } from './routes'
+
+import { api } from '../client'
+
 import type {
   PaymentCondition,
   PaymentConditionFilters,
@@ -5,12 +11,7 @@ import type {
 } from '@/types'
 import type { SuccessResponse } from '@/types/request'
 import { paymentConditionSchema } from '@/utils/schemas/payment-condition'
-
-import { PAYMENT_CONDITIONS_ROUTES } from './routes'
-import { api } from '../client'
-
 import type { PaymentConditionFormInput } from '@/utils/schemas/payment-condition'
-import { AxiosError } from 'axios'
 
 export const paymentConditionsService = {
   async getPaymentConditions(
@@ -26,7 +27,7 @@ export const paymentConditionsService = {
       return data
     } catch (error) {
       console.error('Erro ao buscar condições de pagamento:', error)
-      
+
       throw error
     }
   },
@@ -99,11 +100,11 @@ export const paymentConditionsService = {
     } catch (error) {
       console.error('Erro ao atualizar status da condição de pagamento:', error)
       if (error instanceof AxiosError) {
-      console.log(
-        'Detalhes do erro Axios:',
-        error.response?.data.error.validationErrors,
-      )
-    }
+        console.log(
+          'Detalhes do erro Axios:',
+          error.response?.data.error.validationErrors,
+        )
+      }
       throw error
     }
   },

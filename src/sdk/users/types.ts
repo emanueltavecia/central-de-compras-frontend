@@ -6,7 +6,6 @@ export enum UserAccountStatus {
 export interface User {
   id: string
   email: string
-  passwordPlain?: string
   fullName?: string
   phone?: string
   roleId: string

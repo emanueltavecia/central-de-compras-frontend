@@ -32,6 +32,25 @@ export async function getProducts(): Promise<Product[]> {
   }
 }
 
+export async function getProductsBySupplier(
+  supplierOrgId: string,
+): Promise<Product[]> {
+  try {
+    if (!supplierOrgId) {
+      return []
+    }
+
+    const products = await productsService.getProducts({
+      supplierOrgId,
+      status: true,
+    })
+    return products
+  } catch (error) {
+    console.error('Erro ao buscar produtos por fornecedor:', error)
+    return []
+  }
+}
+
 export async function createProduct(
   data: CreateProductFormInput,
 ): Promise<{ success: boolean; error?: string; product?: Product }> {

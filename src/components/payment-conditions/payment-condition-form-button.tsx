@@ -12,7 +12,10 @@ export function PaymentConditionFormButton() {
 
   return (
     <>
-      <Button leftSection={<IconPlus size={18} />} onClick={() => setOpened(true)}>
+      <Button
+        leftSection={<IconPlus size={18} />}
+        onClick={() => setOpened(true)}
+      >
         Nova Condição
       </Button>
       <PaymentConditionModal opened={opened} onClose={() => setOpened(false)} />

@@ -73,8 +73,6 @@ export async function updateUser(
     body: JSON.stringify(data),
   })
 
-  // Após atualizar, busca o perfil atual e reescreve a sessão
-  // para refletir os dados mais recentes (nome/email/phone/passwordPlain)
   try {
     const profile = await fetchWithAuth('/auth/profile')
     const cookieStore = await cookies()

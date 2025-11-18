@@ -16,6 +16,4 @@ export const paymentConditionSchema = z.object({
   notes: z.string().optional(),
 })
 
-export type PaymentConditionFormInput = z.infer<
-  typeof paymentConditionSchema
->
+export type PaymentConditionFormInput = z.infer<typeof paymentConditionSchema>
