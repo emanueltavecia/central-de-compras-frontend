@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import Link from 'next/link'
 
@@ -13,6 +13,27 @@ interface UserMenuProps {
 export function UserMenu({ user }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'
+  const initialImage = user.profileImageUrl || user.profileImage
+  const initialFullUrl = initialImage?.startsWith('/uploads/') ? `${apiUrl}${initialImage}` : initialImage
+  const [profileImage, setProfileImage] = useState<string | undefined>(initialFullUrl)
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      const newUrl = e.detail?.url
+      if (newUrl !== undefined) {
+        setProfileImage(newUrl || undefined)
+      }
+    }
+    window.addEventListener('profile-image-updated', handler)
+    return () => window.removeEventListener('profile-image-updated', handler)
+  }, [])
+
+  useEffect(() => {
+    const updated = user.profileImageUrl || user.profileImage
+    const full = updated?.startsWith('/uploads/') ? `${apiUrl}${updated}` : updated
+    setProfileImage(full || undefined)
+  }, [user.id, user.profileImageUrl, user.profileImage, apiUrl])
 
   const handleMouseEnter = () => {
     if (timeoutId) {
@@ -43,9 +64,9 @@ export function UserMenu({ user }: UserMenuProps) {
           {user.fullName || user.email}
         </span>
         <div className="bg-primary flex h-10 w-10 items-center justify-center overflow-hidden rounded-full">
-          {user.profileImage ? (
+          {profileImage ? (
             <img
-              src={user.profileImage}
+              src={profileImage}
               alt={user.fullName || user.email}
               className="h-full w-full object-cover"
             />

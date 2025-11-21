@@ -68,9 +68,18 @@ export async function updateUser(
   id: string,
   data: UpdateUserInput,
 ): Promise<User> {
+  const existing = await getUserById(id)
+  const body = {
+    email: data.email ?? existing?.email,
+    fullName: data.fullName ?? existing?.fullName,
+    phone: data.phone ?? existing?.phone,
+    password: data.password || undefined,
+    organizationId: existing?.organizationId,
+    roleId: existing?.roleId,
+  }
   const result = await fetchWithAuth(usersRoutes.update(id), {
     method: 'PUT',
-    body: JSON.stringify(data),
+    body: JSON.stringify(body),
   })
 
   try {

@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 
-import type { User } from '@/types/user'
+import { DashboardStats } from '@/sdk/stats/types'
 import { COOKIE_NAMES } from '@/utils/constants/cookie-names'
 import { getErrorMessage } from '@/utils/error-messages'
 
@@ -24,20 +24,27 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
   })
 
   if (!response.ok) {
-    const error = await response
-      .json()
-      .catch(() => ({ message: 'Erro desconhecido' }))
+    let error
+    try {
+      error = await response.json()
+      console.error('Erro do backend:', error)
+    } catch (parseError) {
+      console.error('Erro ao fazer parse da resposta:', parseError)
+      console.error(
+        'Status:',
+        response.status,
+        'StatusText:',
+        response.statusText,
+      )
+      error = { message: `Erro ${response.status}: ${response.statusText}` }
+    }
     throw new Error(getErrorMessage(error))
   }
 
   return response.json()
 }
 
-export async function getProfile(): Promise<User> {
-  const result = await fetchWithAuth('/auth/profile')
-  const user = result.data as any
-  return {
-    ...user,
-    profileImage: user.profileImage || user.profileImageUrl || undefined,
-  } as User
+export async function getDashboardStats(): Promise<DashboardStats> {
+  const result = await fetchWithAuth('/stats')
+  return result.data
 }

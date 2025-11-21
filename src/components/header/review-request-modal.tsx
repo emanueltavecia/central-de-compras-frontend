@@ -4,7 +4,10 @@ import { useState } from 'react'
 
 import { notifications } from '@mantine/notifications'
 
-import { reviewChangeRequest } from '@/lib/change-requests'
+import {
+  deleteChangeRequest,
+  reviewChangeRequest,
+} from '@/lib/change-requests'
 import {
   ChangeRequestStatus,
   type ChangeRequest,
@@ -15,6 +18,7 @@ interface ReviewRequestModalProps {
   onClose: () => void
   request: ChangeRequest | null
   onReviewed: () => void
+  isAdmin?: boolean
 }
 
 export function ReviewRequestModal({
@@ -22,12 +26,25 @@ export function ReviewRequestModal({
   onClose,
   request,
   onReviewed,
+  isAdmin = false,
 }: ReviewRequestModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   if (!isOpen || !request) return null
 
-  const handleMarkAsRead = async () => {
+  const handleClose = async () => {
+    if (!isAdmin && request.status !== ChangeRequestStatus.PENDING) {
+      try {
+        await deleteChangeRequest(request.id)
+        onReviewed()
+      } catch (error) {
+        console.error('Erro ao remover notificação:', error)
+      }
+    }
+    onClose()
+  }
+
+  const handleApprove = async () => {
     setIsSubmitting(true)
 
     try {
@@ -37,7 +54,7 @@ export function ReviewRequestModal({
 
       notifications.show({
         title: 'Sucesso!',
-        message: 'Solicitação marcada como lida',
+        message: 'Solicitação aprovada e alterações aplicadas',
         color: 'green',
       })
 
@@ -47,7 +64,35 @@ export function ReviewRequestModal({
       notifications.show({
         title: 'Erro!',
         message:
-          error instanceof Error ? error.message : 'Erro ao marcar como lida',
+          error instanceof Error ? error.message : 'Erro ao aprovar solicitação',
+        color: 'red',
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleReject = async () => {
+    setIsSubmitting(true)
+
+    try {
+      await reviewChangeRequest(request.id, {
+        status: ChangeRequestStatus.REJECTED,
+      })
+
+      notifications.show({
+        title: 'Sucesso!',
+        message: 'Solicitação recusada',
+        color: 'green',
+      })
+
+      onReviewed()
+      onClose()
+    } catch (error) {
+      notifications.show({
+        title: 'Erro!',
+        message:
+          error instanceof Error ? error.message : 'Erro ao recusar solicitação',
         color: 'red',
       })
     } finally {
@@ -72,14 +117,28 @@ export function ReviewRequestModal({
         <div className="mb-6 flex items-start justify-between">
           <div>
             <h2 className="text-text-primary text-xl font-bold">
-              Revisar Solicitação de Alteração
+              {isAdmin
+                ? 'Revisar Solicitação de Alteração'
+                : request.status === ChangeRequestStatus.APPROVED
+                  ? 'Solicitação Aprovada'
+                  : request.status === ChangeRequestStatus.REJECTED
+                    ? 'Solicitação Recusada'
+                    : 'Solicitação Pendente'}
             </h2>
             <p className="text-text-secondary mt-1 text-sm">
               Solicitado em {formatDate(request.createdAt)}
             </p>
+            {!isAdmin && request.reviewedAt && (
+              <p className="text-text-secondary mt-1 text-sm">
+                {request.status === ChangeRequestStatus.APPROVED
+                  ? 'Aprovado'
+                  : 'Recusado'}{' '}
+                em {formatDate(request.reviewedAt)}
+              </p>
+            )}
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             disabled={isSubmitting}
             className="text-text-secondary hover:text-text-primary"
           >
@@ -100,34 +159,35 @@ export function ReviewRequestModal({
         </div>
 
         <div className="space-y-4">
-          {/* Informações do solicitante */}
-          <div className="rounded-lg border border-gray-200 p-4">
-            <h3 className="text-text-primary mb-2 text-sm font-semibold">
-              Solicitante
-            </h3>
-            <div className="space-y-1">
-              <p className="text-text-secondary text-sm">
-                <span className="font-medium">Nome:</span>{' '}
-                {request.user?.fullName}
-              </p>
-              <p className="text-text-secondary text-sm">
-                <span className="font-medium">Email:</span>{' '}
-                {request.user?.email}
-              </p>
-            </div>
-          </div>
+          {isAdmin && (
+            <>
+              <div className="rounded-lg border border-gray-200 p-4">
+                <h3 className="text-text-primary mb-2 text-sm font-semibold">
+                  Solicitante
+                </h3>
+                <div className="space-y-1">
+                  <p className="text-text-secondary text-sm">
+                    <span className="font-medium">Nome:</span>{' '}
+                    {request.user?.fullName}
+                  </p>
+                  <p className="text-text-secondary text-sm">
+                    <span className="font-medium">Email:</span>{' '}
+                    {request.user?.email}
+                  </p>
+                </div>
+              </div>
 
-          {/* Informações da organização */}
-          <div className="rounded-lg border border-gray-200 p-4">
-            <h3 className="text-text-primary mb-2 text-sm font-semibold">
-              Organização
-            </h3>
-            <p className="text-text-secondary text-sm">
-              {request.organization?.legalName}
-            </p>
-          </div>
+              <div className="rounded-lg border border-gray-200 p-4">
+                <h3 className="text-text-primary mb-2 text-sm font-semibold">
+                  Organização
+                </h3>
+                <p className="text-text-secondary text-sm">
+                  {request.organization?.legalName}
+                </p>
+              </div>
+            </>
+          )}
 
-          {/* Alterações solicitadas */}
           <div className="rounded-lg border border-gray-200 p-4">
             <h3 className="text-text-primary mb-2 text-sm font-semibold">
               Alterações Solicitadas
@@ -161,24 +221,44 @@ export function ReviewRequestModal({
             </div>
           </div>
 
-          <div className="flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={isSubmitting}
-              className="text-text-primary rounded-lg bg-gray-200 px-6 py-2 text-sm font-medium transition-colors hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={handleMarkAsRead}
-              disabled={isSubmitting}
-              className="bg-primary hover:bg-primary-dark rounded-lg px-6 py-2 text-sm font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isSubmitting ? 'Processando...' : 'Marcar como Lido'}
-            </button>
-          </div>
+          {isAdmin ? (
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={handleClose}
+                disabled={isSubmitting}
+                className="text-text-primary rounded-lg bg-gray-200 px-6 py-2 text-sm font-medium transition-colors hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleReject}
+                disabled={isSubmitting}
+                className="rounded-lg bg-red-600 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isSubmitting ? 'Processando...' : 'Recusar'}
+              </button>
+              <button
+                type="button"
+                onClick={handleApprove}
+                disabled={isSubmitting}
+                className="rounded-lg bg-green-600 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isSubmitting ? 'Processando...' : 'Aceitar'}
+              </button>
+            </div>
+          ) : (
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={handleClose}
+                className="text-text-primary rounded-lg bg-gray-200 px-6 py-2 text-sm font-medium transition-colors hover:bg-gray-300"
+              >
+                Fechar
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
