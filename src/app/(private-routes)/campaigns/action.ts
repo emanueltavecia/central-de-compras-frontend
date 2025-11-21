@@ -15,7 +15,10 @@ import {
 
 export async function getCampaigns() {
   try {
-    const campaigns = await campaignsService.getCampaigns({})
+    const { user } = await getSession()
+    const campaigns = await campaignsService.getCampaigns({
+      supplierOrgId: user?.organizationId as string,
+    })
     return campaigns.map((c) => ({
       ...c,
       startAt: c.startAt

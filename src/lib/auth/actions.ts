@@ -35,7 +35,7 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 
 export async function getProfile(): Promise<User> {
   const result = await fetchWithAuth('/auth/profile')
-  const user = result.data as any
+  const user = result.data
   return {
     ...user,
     profileImage: user.profileImage || user.profileImageUrl || undefined,

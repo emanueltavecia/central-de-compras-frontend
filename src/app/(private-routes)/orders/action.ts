@@ -10,11 +10,20 @@ import type {
   OrderCalculationResponse,
 } from '@/types'
 import { CACHE_TAGS } from '@/utils/constants/cache-tags'
+import { UserRole } from '@/utils/enums'
 import type { CreateOrderInput } from '@/utils/schemas/orders'
 
 export async function getOrders(): Promise<Order[]> {
   try {
-    const orders = await ordersService.getOrders({})
+    const { user } = await getSession()
+    const supplierOrgId =
+      user?.role.name === UserRole.SUPPLIER ? user.organizationId : undefined
+    const storeOrgId =
+      user?.role.name === UserRole.STORE ? user.organizationId : undefined
+    const orders = await ordersService.getOrders({
+      supplierOrgId,
+      storeOrgId,
+    })
     return orders
   } catch (error) {
     console.error('Erro ao buscar pedidos:', error)

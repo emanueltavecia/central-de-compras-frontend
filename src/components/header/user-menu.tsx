@@ -15,12 +15,16 @@ export function UserMenu({ user }: UserMenuProps) {
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'
   const initialImage = user.profileImageUrl || user.profileImage
-  const initialFullUrl = initialImage?.startsWith('/uploads/') ? `${apiUrl}${initialImage}` : initialImage
-  const [profileImage, setProfileImage] = useState<string | undefined>(initialFullUrl)
+  const initialFullUrl = initialImage?.startsWith('/uploads/')
+    ? `${apiUrl}${initialImage}`
+    : initialImage
+  const [profileImage, setProfileImage] = useState<string | undefined>(
+    initialFullUrl,
+  )
 
   useEffect(() => {
-    const handler = (e: any) => {
-      const newUrl = e.detail?.url
+    const handler = (e: unknown) => {
+      const newUrl = (e as CustomEvent).detail?.url
       if (newUrl !== undefined) {
         setProfileImage(newUrl || undefined)
       }
@@ -31,7 +35,9 @@ export function UserMenu({ user }: UserMenuProps) {
 
   useEffect(() => {
     const updated = user.profileImageUrl || user.profileImage
-    const full = updated?.startsWith('/uploads/') ? `${apiUrl}${updated}` : updated
+    const full = updated?.startsWith('/uploads/')
+      ? `${apiUrl}${updated}`
+      : updated
     setProfileImage(full || undefined)
   }, [user.id, user.profileImageUrl, user.profileImage, apiUrl])
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-import { getPendingCount, getAllChangeRequests } from '@/lib/change-requests'
+import { getAllChangeRequests } from '@/lib/change-requests'
 import type { ChangeRequest } from '@/sdk/change-requests/types'
 import { ChangeRequestStatus } from '@/sdk/change-requests/types'
 

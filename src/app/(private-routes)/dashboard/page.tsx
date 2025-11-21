@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
-import { getDashboardStats } from '@/lib/stats/actions'
 import { getSession } from '@/lib/auth'
+import { getDashboardStats } from '@/lib/stats/actions'
 import { UserRole } from '@/utils/enums'
 
 export default async function DashboardPage() {
@@ -136,7 +136,7 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Link
             href="/organizations/stores"
-            className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-primary hover:shadow-md"
+            className="hover:border-primary flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md"
           >
             <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-lg">
               <svg
@@ -165,7 +165,7 @@ export default async function DashboardPage() {
 
           <Link
             href="/organizations/suppliers"
-            className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-primary hover:shadow-md"
+            className="hover:border-primary flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md"
           >
             <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-lg">
               <svg

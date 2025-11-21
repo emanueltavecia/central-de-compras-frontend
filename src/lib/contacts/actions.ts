@@ -2,13 +2,13 @@
 
 import { cookies } from 'next/headers'
 
-import { COOKIE_NAMES } from '@/utils/constants/cookie-names'
 import type {
   Contact,
   CreateContactInput,
   UpdateContactInput,
   ContactFilters,
 } from '@/sdk/contacts/types'
+import { COOKIE_NAMES } from '@/utils/constants/cookie-names'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'
 

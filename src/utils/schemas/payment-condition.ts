@@ -11,7 +11,7 @@ export const paymentConditionSchema = z.object({
     .optional()
     .nullable(),
   paymentMethod: z.nativeEnum(PaymentMethod, {
-    errorMap: () => ({ message: VALIDATION_MESSAGES.REQUIRED }),
+    message: VALIDATION_MESSAGES.REQUIRED,
   }),
   notes: z.string().optional(),
 })

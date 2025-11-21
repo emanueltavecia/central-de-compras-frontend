@@ -2,8 +2,8 @@
 
 import { cookies } from 'next/headers'
 
-import { COOKIE_NAMES } from '@/utils/constants/cookie-names'
 import type { SessionUser } from '@/lib/auth'
+import { COOKIE_NAMES } from '@/utils/constants/cookie-names'
 
 export async function updateUserProfileImage(profileImageUrl: string) {
   const cookieStore = await cookies()

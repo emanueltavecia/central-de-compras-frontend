@@ -22,6 +22,22 @@ import { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 
 import {
+  getOrganizationAddresses,
+  createAddress,
+  updateAddress,
+  deleteAddress,
+  type Address,
+  type CreateAddressInput,
+} from '@/lib/addresses/actions'
+import {
+  getAllContacts,
+  createContact,
+  updateContact,
+  deleteContact,
+  setPrimaryContact,
+  unsetPrimaryContact,
+} from '@/lib/contacts/actions'
+import {
   getAllOrganizations,
   createOrganization,
   updateOrganization,
@@ -35,25 +51,9 @@ import {
   updateUserStatus,
   deleteUser,
 } from '@/lib/users'
-import {
-  getAllContacts,
-  createContact,
-  updateContact,
-  deleteContact,
-  setPrimaryContact,
-  unsetPrimaryContact,
-} from '@/lib/contacts/actions'
-import {
-  getOrganizationAddresses,
-  createAddress,
-  updateAddress,
-  deleteAddress,
-  type Address,
-  type CreateAddressInput,
-} from '@/lib/addresses/actions'
+import { type Contact } from '@/sdk/contacts'
 import { type Organization, OrgType } from '@/sdk/organizations'
 import { type User, UserAccountStatus } from '@/sdk/users'
-import { type Contact } from '@/sdk/contacts'
 import {
   organizationSchema,
   type OrganizationInput,
@@ -410,7 +410,9 @@ export function OrganizationsPageClient({
   const [loadingAddresses, setLoadingAddresses] = useState(false)
   const [addAddressOpen, setAddAddressOpen] = useState(false)
   const [editAddressOpen, setEditAddressOpen] = useState<Address | null>(null)
-  const [deleteAddressOpen, setDeleteAddressOpen] = useState<string | null>(null)
+  const [deleteAddressOpen, setDeleteAddressOpen] = useState<string | null>(
+    null,
+  )
 
   const addUserForm = useForm({
     defaultValues: {
@@ -1838,10 +1840,7 @@ export function OrganizationsPageClient({
               label="Telefone"
               {...editContactForm.register('phone')}
             />
-            <TextInput
-              label="Cargo"
-              {...editContactForm.register('role')}
-            />
+            <TextInput label="Cargo" {...editContactForm.register('role')} />
             <Group justify="flex-end">
               <Button type="submit">Salvar</Button>
             </Group>

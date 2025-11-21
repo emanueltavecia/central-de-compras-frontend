@@ -20,18 +20,22 @@ export function ProfileHeader({
   profileImage,
 }: ProfileHeaderProps) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'
-  const initialFullUrl = profileImage?.startsWith('/uploads/') ? `${apiUrl}${profileImage}` : profileImage
+  const initialFullUrl = profileImage?.startsWith('/uploads/')
+    ? `${apiUrl}${profileImage}`
+    : profileImage
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [image, setImage] = useState(initialFullUrl)
 
   useEffect(() => {
-    const fullUrl = profileImage?.startsWith('/uploads/') ? `${apiUrl}${profileImage}` : profileImage
+    const fullUrl = profileImage?.startsWith('/uploads/')
+      ? `${apiUrl}${profileImage}`
+      : profileImage
     setImage(fullUrl)
   }, [profileImage, apiUrl])
 
   useEffect(() => {
-    const handler = (e: any) => {
-      const newUrl = e.detail?.url
+    const handler = (e: unknown) => {
+      const newUrl = (e as CustomEvent).detail?.url
       if (newUrl !== undefined) {
         setImage(newUrl || undefined)
       }

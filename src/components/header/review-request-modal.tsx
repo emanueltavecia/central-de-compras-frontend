@@ -4,10 +4,7 @@ import { useState } from 'react'
 
 import { notifications } from '@mantine/notifications'
 
-import {
-  deleteChangeRequest,
-  reviewChangeRequest,
-} from '@/lib/change-requests'
+import { deleteChangeRequest, reviewChangeRequest } from '@/lib/change-requests'
 import {
   ChangeRequestStatus,
   type ChangeRequest,
@@ -64,7 +61,9 @@ export function ReviewRequestModal({
       notifications.show({
         title: 'Erro!',
         message:
-          error instanceof Error ? error.message : 'Erro ao aprovar solicitação',
+          error instanceof Error
+            ? error.message
+            : 'Erro ao aprovar solicitação',
         color: 'red',
       })
     } finally {
@@ -92,7 +91,9 @@ export function ReviewRequestModal({
       notifications.show({
         title: 'Erro!',
         message:
-          error instanceof Error ? error.message : 'Erro ao recusar solicitação',
+          error instanceof Error
+            ? error.message
+            : 'Erro ao recusar solicitação',
         color: 'red',
       })
     } finally {

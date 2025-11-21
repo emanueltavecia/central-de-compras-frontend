@@ -1,7 +1,6 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { revalidatePath } from 'next/cache'
 
 import { COOKIE_NAMES } from '@/utils/constants/cookie-names'
 
@@ -46,7 +45,7 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
     cache: 'no-store',
   })
 
-  let body: any = null
+  let body = null
   try {
     body = await res.json()
   } catch {
@@ -102,7 +101,10 @@ export async function deleteAddress(
   organizationId: string,
   addressId: string,
 ): Promise<void> {
-  await fetchWithAuth(`/organizations/${organizationId}/addresses/${addressId}`, {
-    method: 'DELETE',
-  })
+  await fetchWithAuth(
+    `/organizations/${organizationId}/addresses/${addressId}`,
+    {
+      method: 'DELETE',
+    },
+  )
 }
