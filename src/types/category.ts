@@ -4,8 +4,10 @@ export interface Category {
   parentId?: string
   description?: string
   createdAt: string
+  supplierOrgId: string
 }
 
 export interface CategoryFilters {
   parentId?: string
+  supplierOrgId?: string
 }

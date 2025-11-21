@@ -14,7 +14,10 @@ import type {
 
 export async function getCategories(): Promise<Category[]> {
   try {
-    const categories = await categoriesService.getCategories({})
+    const { user } = await getSession()
+    const categories = await categoriesService.getCategories({
+      supplierOrgId: user?.organizationId,
+    })
     return categories
   } catch (error) {
     console.error('Erro ao buscar categorias:', error)
@@ -42,6 +45,7 @@ export async function getProductsBySupplier(
 
     const products = await productsService.getProducts({
       supplierOrgId,
+      status: true,
     })
     return products
   } catch (error) {

@@ -6,7 +6,10 @@ import { productsService } from '@/sdk/products'
 
 export async function getCategories() {
   try {
-    const categories = await categoriesService.getCategories({})
+    const { user } = await getSession()
+    const categories = await categoriesService.getCategories({
+      supplierOrgId: user?.organizationId,
+    })
     return categories
   } catch (error) {
     console.error('Erro ao buscar categorias:', error)

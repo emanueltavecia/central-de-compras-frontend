@@ -5,6 +5,7 @@ import { revalidateTag } from 'next/cache'
 import { getSession } from '@/lib/auth/session'
 import { ordersService } from '@/sdk/orders'
 import type {
+  ErrorResponse,
   Order,
   OrderCalculationRequest,
   OrderCalculationResponse,
@@ -12,6 +13,7 @@ import type {
 import { CACHE_TAGS } from '@/utils/constants/cache-tags'
 import { UserRole } from '@/utils/enums'
 import type { CreateOrderInput } from '@/utils/schemas/orders'
+import { getErrorMessage } from '@/utils/error-messages'
 
 export async function getOrders(): Promise<Order[]> {
   try {
@@ -59,7 +61,7 @@ export async function createOrder(
     console.error('Erro ao criar pedido:', error)
     return {
       success: false,
-      error: 'Erro ao criar pedido. Tente novamente.',
+      error: getErrorMessage(error as ErrorResponse) || 'Erro ao criar pedido.',
     }
   }
 }
