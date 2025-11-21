@@ -12,8 +12,8 @@ import type {
 } from '@/types'
 import { CACHE_TAGS } from '@/utils/constants/cache-tags'
 import { UserRole } from '@/utils/enums'
-import type { CreateOrderInput } from '@/utils/schemas/orders'
 import { getErrorMessage } from '@/utils/error-messages'
+import type { CreateOrderInput } from '@/utils/schemas/orders'
 
 export async function getOrders(): Promise<Order[]> {
   try {
