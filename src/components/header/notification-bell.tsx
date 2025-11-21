@@ -2,15 +2,19 @@
 
 import { useEffect, useState } from 'react'
 
-import { getPendingCount, getAllChangeRequests } from '@/lib/change-requests'
+import { getAllChangeRequests } from '@/lib/change-requests'
 import type { ChangeRequest } from '@/sdk/change-requests/types'
 import { ChangeRequestStatus } from '@/sdk/change-requests/types'
 
 interface NotificationBellProps {
   onRequestClick: (request: ChangeRequest) => void
+  userId?: string
 }
 
-export function NotificationBell({ onRequestClick }: NotificationBellProps) {
+export function NotificationBell({
+  onRequestClick,
+  userId,
+}: NotificationBellProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [count, setCount] = useState(0)
   const [requests, setRequests] = useState<ChangeRequest[]>([])
@@ -18,15 +22,34 @@ export function NotificationBell({ onRequestClick }: NotificationBellProps) {
 
   const loadPendingRequests = async () => {
     try {
-      const pendingCount = await getPendingCount()
-      setCount(pendingCount)
+      let pendingCount: number
+      let allRequests: ChangeRequest[]
 
-      if (pendingCount > 0) {
-        const allRequests = await getAllChangeRequests({
+      if (userId) {
+        const allUserRequests = await getAllChangeRequests({
+          userId,
+        })
+
+        const reviewedRequests = allUserRequests.filter(
+          (r) =>
+            r.status === ChangeRequestStatus.APPROVED ||
+            r.status === ChangeRequestStatus.REJECTED,
+        )
+        const pendingRequests = allUserRequests.filter(
+          (r) => r.status === ChangeRequestStatus.PENDING,
+        )
+
+        pendingCount = reviewedRequests.length + pendingRequests.length
+        setRequests([...reviewedRequests, ...pendingRequests])
+      } else {
+        allRequests = await getAllChangeRequests({
           status: ChangeRequestStatus.PENDING,
         })
+        pendingCount = allRequests.length
         setRequests(allRequests)
       }
+
+      setCount(pendingCount)
     } catch (error) {
       console.error('Erro ao carregar notificações:', error)
     }
@@ -119,16 +142,37 @@ export function NotificationBell({ onRequestClick }: NotificationBellProps) {
                   className="hover:bg-surface w-full border-b border-gray-100 px-4 py-3 text-left transition-colors"
                 >
                   <div className="mb-1 flex items-start justify-between">
-                    <p className="text-text-primary text-sm font-medium">
-                      {request.user?.fullName || request.user?.email}
-                    </p>
+                    <div className="flex-1">
+                      <p className="text-text-primary text-sm font-medium">
+                        {userId
+                          ? 'Sua solicitação de alteração'
+                          : request.user?.fullName || request.user?.email}
+                      </p>
+                      {request.status === ChangeRequestStatus.APPROVED && (
+                        <span className="mt-1 inline-block rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                          Aprovada
+                        </span>
+                      )}
+                      {request.status === ChangeRequestStatus.REJECTED && (
+                        <span className="mt-1 inline-block rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">
+                          Recusada
+                        </span>
+                      )}
+                      {request.status === ChangeRequestStatus.PENDING && (
+                        <span className="mt-1 inline-block rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
+                          Pendente
+                        </span>
+                      )}
+                    </div>
                     <span className="text-text-secondary text-xs">
                       {formatDate(request.createdAt)}
                     </span>
                   </div>
-                  <p className="text-text-secondary text-xs">
-                    {request.organization?.legalName}
-                  </p>
+                  {!userId && (
+                    <p className="text-text-secondary text-xs">
+                      {request.organization?.legalName}
+                    </p>
+                  )}
                   <p className="text-text-secondary mt-1 text-xs">
                     {Object.keys(request.requestedChanges).length}{' '}
                     alteração(ões)

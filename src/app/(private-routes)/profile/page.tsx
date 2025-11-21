@@ -21,9 +21,10 @@ export default async function ProfilePage() {
     <div className="bg-surface min-h-screen p-8">
       <div className="mx-auto max-w-6xl">
         <ProfileHeader
+          userId={user.id}
           fullName={user.fullName || user.email}
           role={user.role.name}
-          profileImage={user.profileImage}
+          profileImage={user.profileImageUrl || user.profileImage}
         />
 
         {isAdmin ? (

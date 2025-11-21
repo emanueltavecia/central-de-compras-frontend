@@ -1,23 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { UploadImageModal } from './upload-image-modal'
 
 import { UserRole } from '@/utils/enums'
 
 interface ProfileHeaderProps {
+  userId: string
   fullName: string
   role: UserRole
   profileImage?: string
 }
 
 export function ProfileHeader({
+  userId,
   fullName,
   role,
   profileImage,
 }: ProfileHeaderProps) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'
+  const initialFullUrl = profileImage?.startsWith('/uploads/')
+    ? `${apiUrl}${profileImage}`
+    : profileImage
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [image, setImage] = useState(initialFullUrl)
+
+  useEffect(() => {
+    const fullUrl = profileImage?.startsWith('/uploads/')
+      ? `${apiUrl}${profileImage}`
+      : profileImage
+    setImage(fullUrl)
+  }, [profileImage, apiUrl])
+
+  useEffect(() => {
+    const handler = (e: unknown) => {
+      const newUrl = (e as CustomEvent).detail?.url
+      if (newUrl !== undefined) {
+        setImage(newUrl || undefined)
+      }
+    }
+    window.addEventListener('profile-image-updated', handler)
+    return () => window.removeEventListener('profile-image-updated', handler)
+  }, [])
 
   const getRoleLabel = (role: UserRole) => {
     switch (role) {
@@ -44,10 +69,10 @@ export function ProfileHeader({
           onClick={() => setIsModalOpen(true)}
           className="group absolute top-1/2 left-8 h-32 w-32 -translate-y-1/2 overflow-hidden rounded-full border-4 border-white shadow-lg transition-transform hover:scale-105"
         >
-          {profileImage ? (
+          {image ? (
             <>
               <img
-                src={profileImage}
+                src={image}
                 alt={fullName}
                 className="h-full w-full object-cover transition-all group-hover:blur-sm"
               />
@@ -62,7 +87,7 @@ export function ProfileHeader({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    d="M12 5l2.5 3H19a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V9a1 1 0 011-1h4.5L12 5zm0 4a4 4 0 100 8 4 4 0 000-8z"
                   />
                 </svg>
               </div>
@@ -85,7 +110,7 @@ export function ProfileHeader({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    d="M12 5l2.5 3H19a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V9a1 1 0 011-1h4.5L12 5zm0 4a4 4 0 100 8 4 4 0 000-8z"
                   />
                 </svg>
               </div>
@@ -101,6 +126,8 @@ export function ProfileHeader({
       <UploadImageModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        userId={userId}
+        currentImage={image}
       />
     </>
   )

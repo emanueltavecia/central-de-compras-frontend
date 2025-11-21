@@ -4,6 +4,7 @@ import { SuccessResponse } from '@/types/request'
 export interface GetCategoriesParams {
   parentId?: string
   search?: string
+  supplierOrgId?: string
 }
 export interface CreateCategoryParams {
   name: string

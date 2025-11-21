@@ -16,4 +16,5 @@ export interface User {
   createdBy?: string
   createdAt: string
   profileImage?: string
+  profileImageUrl?: string
 }

@@ -291,7 +291,26 @@ export function NewOrderModal({ suppliers, userRole }: NewOrderModalProps) {
 
   return (
     <>
-      <Button onClick={() => setOpened(true)}>Novo Pedido</Button>
+      <Button
+        onClick={() => setOpened(true)}
+        leftSection={
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+        }
+      >
+        Novo Pedido
+      </Button>
 
       <Modal
         opened={opened}
@@ -559,13 +578,7 @@ export function NewOrderModal({ suppliers, userRole }: NewOrderModalProps) {
                           {
                             orderCalculation.adjustmentDetails.paymentCondition
                               .name
-                          }{' '}
-                          (
-                          {
-                            orderCalculation.adjustmentDetails.paymentCondition
-                              .paymentMethod
                           }
-                          )
                         </Badge>
                       </Stack>
                     </>

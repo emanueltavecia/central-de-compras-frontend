@@ -14,7 +14,10 @@ import type {
 
 export async function getCategories(): Promise<Category[]> {
   try {
-    const categories = await categoriesService.getCategories({})
+    const { user } = await getSession()
+    const categories = await categoriesService.getCategories({
+      supplierOrgId: user?.organizationId,
+    })
     return categories
   } catch (error) {
     console.error('Erro ao buscar categorias:', error)
@@ -106,6 +109,25 @@ export async function updateProduct(
     return {
       success: false,
       error: 'Erro ao atualizar produto. Tente novamente.',
+    }
+  }
+}
+
+export async function toggleProductStatus(id: string, active: boolean) {
+  try {
+    await productsService.updateProductStatus(id, active)
+
+    revalidateTag(CACHE_TAGS.PRODUCTS.LIST, { expire: 0 })
+
+    return {
+      success: true,
+      message: `Produto ${active ? 'ativado' : 'desativado'} com sucesso`,
+    }
+  } catch (error) {
+    console.error('Erro ao atualizar status do produto:', error)
+    return {
+      success: false,
+      message: 'Erro ao atualizar status do produto',
     }
   }
 }

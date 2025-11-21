@@ -1,3 +1,5 @@
+import { ErrorResponse as ApiErrorResponse } from '@/types'
+
 interface ErrorResponse {
   message?: string
   errorCode?: string
@@ -21,11 +23,19 @@ const ERROR_MESSAGES: Record<string, string> = {
 }
 
 export function getErrorMessage(
-  error: ErrorResponse | undefined | null,
+  error: ErrorResponse | ApiErrorResponse | undefined | null,
 ): string {
   // Garantir que error não é undefined/null
   if (!error) {
     return 'Ocorreu um erro inesperado'
+  }
+
+  if (typeof error.error !== 'string' && error.error?.validationErrors) {
+    console.log('Validation Errors:', error.error.validationErrors)
+    return (
+      (error.error.validationErrors?.[0]?.message as string) ||
+      'Dados de entrada inválidos'
+    )
   }
 
   // Se error.error é um objeto (erro de validação)
@@ -35,7 +45,7 @@ export function getErrorMessage(
 
   // Backend retorna "error" ao invés de "errorCode" quando é string
   const code =
-    error.errorCode ||
+    (error as ErrorResponse)?.errorCode ||
     (typeof error.error === 'string' ? error.error : undefined)
 
   if (code && ERROR_MESSAGES[code]) {

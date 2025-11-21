@@ -2,6 +2,8 @@
 
 import { cookies } from 'next/headers'
 
+import { getSession } from '../auth'
+
 import {
   Organization,
   OrganizationFilters,
@@ -11,6 +13,7 @@ import {
 } from '@/sdk/organizations/types'
 import type { User } from '@/types/user'
 import { COOKIE_NAMES } from '@/utils/constants/cookie-names'
+import { UserRole } from '@/utils/enums'
 import { getErrorMessage } from '@/utils/error-messages'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
@@ -51,6 +54,10 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 export async function getAllOrganizations(
   filters?: OrganizationFilters,
 ): Promise<Organization[]> {
+  const { user } = await getSession()
+  if (user?.role.name === UserRole.SUPPLIER) {
+    return []
+  }
   const params = new URLSearchParams()
   if (filters?.type) params.append('type', filters.type)
   if (filters?.active !== undefined)

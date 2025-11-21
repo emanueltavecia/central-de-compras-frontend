@@ -1,12 +1,16 @@
 import { Card, Stack, Text, Title } from '@mantine/core'
 
-import { getPaymentConditions } from './action'
+import { getPaymentConditionsBySupplier } from './action'
 
 import { PaymentConditionFormButton } from '@/components/payment-conditions'
 import { PaymentConditionsTable } from '@/components/payment-conditions/payment-conditions-table'
+import { getSession } from '@/lib/auth'
 
 export default async function PaymentConditionsPage() {
-  const paymentConditions = await getPaymentConditions()
+  const { user } = await getSession()
+  const paymentConditions = await getPaymentConditionsBySupplier(
+    user?.organizationId as string,
+  )
 
   const activeConditions = paymentConditions.filter(
     (condition) => condition.active,

@@ -5,16 +5,27 @@ import { revalidateTag } from 'next/cache'
 import { getSession } from '@/lib/auth/session'
 import { ordersService } from '@/sdk/orders'
 import type {
+  ErrorResponse,
   Order,
   OrderCalculationRequest,
   OrderCalculationResponse,
 } from '@/types'
 import { CACHE_TAGS } from '@/utils/constants/cache-tags'
+import { UserRole } from '@/utils/enums'
+import { getErrorMessage } from '@/utils/error-messages'
 import type { CreateOrderInput } from '@/utils/schemas/orders'
 
 export async function getOrders(): Promise<Order[]> {
   try {
-    const orders = await ordersService.getOrders({})
+    const { user } = await getSession()
+    const supplierOrgId =
+      user?.role.name === UserRole.SUPPLIER ? user.organizationId : undefined
+    const storeOrgId =
+      user?.role.name === UserRole.STORE ? user.organizationId : undefined
+    const orders = await ordersService.getOrders({
+      supplierOrgId,
+      storeOrgId,
+    })
     return orders
   } catch (error) {
     console.error('Erro ao buscar pedidos:', error)
@@ -50,7 +61,7 @@ export async function createOrder(
     console.error('Erro ao criar pedido:', error)
     return {
       success: false,
-      error: 'Erro ao criar pedido. Tente novamente.',
+      error: getErrorMessage(error as ErrorResponse) || 'Erro ao criar pedido.',
     }
   }
 }
@@ -75,6 +86,7 @@ export async function calculateOrder(
     const calculation = await ordersService.calculateOrder({
       ...params,
       storeOrgId: user.organizationId,
+      storeState: user.organization?.address?.[0]?.state,
     })
 
     return { success: true, calculation }

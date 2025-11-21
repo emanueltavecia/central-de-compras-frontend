@@ -7,10 +7,10 @@ export const createProductFormSchema = z.object({
   description: z.string().optional(),
   unit: z.string().min(1, VALIDATION_MESSAGES.REQUIRED),
   basePrice: z
-    .number({ required_error: VALIDATION_MESSAGES.REQUIRED })
+    .number({ message: VALIDATION_MESSAGES.REQUIRED })
     .positive(VALIDATION_MESSAGES.NUMBER_POSITIVE),
   availableQuantity: z
-    .number({ required_error: VALIDATION_MESSAGES.REQUIRED })
+    .number({ message: VALIDATION_MESSAGES.REQUIRED })
     .nonnegative(VALIDATION_MESSAGES.NUMBER_POSITIVE),
   categoryId: z.string().optional(),
 })
@@ -24,10 +24,10 @@ export const updateProductSchema = z.object({
   description: z.string().optional(),
   unit: z.string().min(1, VALIDATION_MESSAGES.REQUIRED),
   basePrice: z
-    .number({ required_error: VALIDATION_MESSAGES.REQUIRED })
+    .number({ message: VALIDATION_MESSAGES.REQUIRED })
     .positive(VALIDATION_MESSAGES.NUMBER_POSITIVE),
   availableQuantity: z
-    .number({ required_error: VALIDATION_MESSAGES.REQUIRED })
+    .number({ message: VALIDATION_MESSAGES.REQUIRED })
     .nonnegative(VALIDATION_MESSAGES.NUMBER_POSITIVE),
   categoryId: z.string().optional(),
   active: z.boolean(),

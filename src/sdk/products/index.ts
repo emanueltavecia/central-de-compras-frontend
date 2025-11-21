@@ -33,4 +33,9 @@ export const productsService = {
     const { data } = await api.put(PRODUCTS_ROUTES.BY_ID(id), params)
     return data.data
   },
+
+  async updateProductStatus(id: string, active: boolean): Promise<Product> {
+    const { data } = await api.patch(PRODUCTS_ROUTES.STATUS(id), { active })
+    return data.data
+  },
 }

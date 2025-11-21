@@ -22,6 +22,8 @@ export function HeaderActions({ user }: HeaderActionsProps) {
   const [refreshTrigger, setRefreshTrigger] = useState(0)
 
   const isAdmin = user.role.name === UserRole.ADMIN
+  const isStoreOrSupplier =
+    user.role.name === UserRole.STORE || user.role.name === UserRole.SUPPLIER
 
   const handleRequestClick = (request: ChangeRequest) => {
     setSelectedRequest(request)
@@ -34,11 +36,12 @@ export function HeaderActions({ user }: HeaderActionsProps) {
 
   return (
     <>
-      <div className="flex items-center gap-4">
-        {isAdmin && (
+      <div className="ml-4 flex items-center gap-4">
+        {(isAdmin || isStoreOrSupplier) && (
           <NotificationBell
             key={refreshTrigger}
             onRequestClick={handleRequestClick}
+            userId={isStoreOrSupplier ? user.id : undefined}
           />
         )}
         <UserMenu user={user} />
@@ -49,6 +52,7 @@ export function HeaderActions({ user }: HeaderActionsProps) {
         onClose={() => setIsReviewModalOpen(false)}
         request={selectedRequest}
         onReviewed={handleReviewed}
+        isAdmin={isAdmin}
       />
     </>
   )
