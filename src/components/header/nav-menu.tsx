@@ -15,7 +15,7 @@ export function NavMenu({ item }: NavMenuProps) {
     return (
       <Menu trigger="hover" openDelay={100}>
         <Menu.Target>
-          <span className="text-text-secondary hover:text-primary cursor-pointer text-[14px] font-medium transition-colors">
+          <span className="text-text-secondary hover:text-primary cursor-pointer text-center text-[14px] font-medium transition-colors">
             {item.name}
           </span>
         </Menu.Target>
@@ -37,7 +37,7 @@ export function NavMenu({ item }: NavMenuProps) {
   return (
     <Link
       href={item.route}
-      className="text-text-secondary hover:text-primary text-sm font-medium transition-colors"
+      className="text-text-secondary hover:text-primary text-center text-sm font-medium transition-colors"
     >
       {item.name}
     </Link>

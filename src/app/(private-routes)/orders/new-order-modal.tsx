@@ -578,13 +578,7 @@ export function NewOrderModal({ suppliers, userRole }: NewOrderModalProps) {
                           {
                             orderCalculation.adjustmentDetails.paymentCondition
                               .name
-                          }{' '}
-                          (
-                          {
-                            orderCalculation.adjustmentDetails.paymentCondition
-                              .paymentMethod
                           }
-                          )
                         </Badge>
                       </Stack>
                     </>

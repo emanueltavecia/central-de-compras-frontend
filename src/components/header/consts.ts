@@ -12,6 +12,11 @@ export const ROUTE_PERMISSIONS: RoutePermission = {
     route: '/campaigns',
     roles: [UserRole.SUPPLIER],
   },
+  supplierStateConditions: {
+    name: 'Condições por Estado',
+    route: '/supplier-state-conditions',
+    roles: [UserRole.SUPPLIER],
+  },
   cashback: {
     name: 'Cashback',
     route: '/cashback',

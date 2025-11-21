@@ -86,6 +86,7 @@ export async function calculateOrder(
     const calculation = await ordersService.calculateOrder({
       ...params,
       storeOrgId: user.organizationId,
+      storeState: user.organization?.address?.[0]?.state,
     })
 
     return { success: true, calculation }

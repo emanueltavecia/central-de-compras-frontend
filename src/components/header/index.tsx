@@ -44,7 +44,7 @@ export async function Header() {
               </div>
             </Link>
 
-            <nav className="flex gap-4">
+            <nav className="flex items-center gap-4">
               {Object.values(ROUTE_PERMISSIONS).map((item) => {
                 const hasPermission =
                   !item.roles || item.roles.some((p) => user.role.name === p)

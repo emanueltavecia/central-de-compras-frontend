@@ -21,4 +21,7 @@ export const CACHE_TAGS = {
   PAYMENT_CONDITIONS: {
     LIST: 'payment-conditions-list',
   },
+  SUPPLIER_STATE_CONDITIONS: {
+    LIST: 'supplier-state-conditions-list',
+  },
 } as const

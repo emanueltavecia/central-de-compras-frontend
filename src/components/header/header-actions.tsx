@@ -36,7 +36,7 @@ export function HeaderActions({ user }: HeaderActionsProps) {
 
   return (
     <>
-      <div className="flex items-center gap-4">
+      <div className="ml-4 flex items-center gap-4">
         {(isAdmin || isStoreOrSupplier) && (
           <NotificationBell
             key={refreshTrigger}
