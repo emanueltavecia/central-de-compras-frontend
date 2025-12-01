@@ -30,7 +30,6 @@ export async function getPaymentConditionsBySupplier(supplierOrgId: string) {
     const paymentConditions =
       await paymentConditionsService.getPaymentConditions({
         supplierOrgId,
-        status: true,
       })
     return paymentConditions
   } catch (error) {

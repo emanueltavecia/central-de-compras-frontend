@@ -1,3 +1,5 @@
+import { User } from './user'
+
 import { OrderStatus } from '@/utils/enums'
 
 export interface OrderStatusHistory {
@@ -5,7 +7,7 @@ export interface OrderStatusHistory {
   orderId: string
   previousStatus?: OrderStatus
   newStatus: OrderStatus
-  changedBy?: string
+  changedBy?: User
   note?: string
   createdAt: string
 }

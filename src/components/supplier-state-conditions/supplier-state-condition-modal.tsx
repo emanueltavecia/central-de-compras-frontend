@@ -203,7 +203,7 @@ export function SupplierStateConditionModal({
                 placeholder="Selecione a data de início"
                 valueFormat="DD/MM/YYYY"
                 clearable
-                value={field.value ? new Date(field.value) : null}
+                value={field.value || null}
                 onChange={(date) => {
                   field.onChange(date || undefined)
                 }}
@@ -221,7 +221,7 @@ export function SupplierStateConditionModal({
                 placeholder="Selecione a data de término"
                 valueFormat="DD/MM/YYYY"
                 clearable
-                value={field.value ? new Date(field.value) : null}
+                value={field.value || null}
                 onChange={(date) => {
                   field.onChange(date || undefined)
                 }}

@@ -1,4 +1,5 @@
 import { OrderItem } from './order-item'
+import { OrderStatusHistory } from './order-status-history'
 
 import { OrderStatus } from '@/utils/enums'
 
@@ -20,6 +21,7 @@ export interface Order {
   createdBy?: string
   createdAt: string
   items: OrderItem[]
+  statusHistory: OrderStatusHistory[]
 }
 
 export interface OrderFilters {

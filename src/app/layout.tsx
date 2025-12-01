@@ -44,7 +44,7 @@ export default function RootLayout({
           <TokenInitializer />
         </Suspense>
         <MantineProvider>
-          <DatesProvider settings={{ locale: 'pt-br' }}>
+          <DatesProvider settings={{ locale: 'pt-br', firstDayOfWeek: 0 }}>
             <Notifications position="top-right" />
             {children}
           </DatesProvider>

@@ -139,7 +139,7 @@ export function PaymentConditionModal({
       }
       size="lg"
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Stack gap="md">
           <TextInput
             label="Nome"
