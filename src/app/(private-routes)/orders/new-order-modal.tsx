@@ -228,10 +228,21 @@ export function NewOrderModal({ suppliers, userRole }: NewOrderModalProps) {
       return
     }
 
-    setValue('items', [
-      ...items,
-      { productId: currentProductId, quantity: currentQuantity },
-    ])
+    const existingItemIndex = items.findIndex(
+      (item) => item.productId === currentProductId,
+    )
+
+    if (existingItemIndex >= 0) {
+      const updatedItems = [...items]
+      updatedItems[existingItemIndex].quantity += currentQuantity
+      setValue('items', updatedItems)
+    } else {
+      setValue('items', [
+        ...items,
+        { productId: currentProductId, quantity: currentQuantity },
+      ])
+    }
+
     setCurrentProductId('')
     setCurrentQuantity(1)
   }
