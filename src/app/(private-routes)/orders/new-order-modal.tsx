@@ -353,7 +353,7 @@ export function NewOrderModal({ suppliers, userRole }: NewOrderModalProps) {
                   ? 'Selecione um fornecedor primeiro'
                   : 'Selecione a condição de pagamento'
             }
-            data={paymentConditions.map((pc) => ({
+            data={paymentConditions.filter((pc) => pc.active).map((pc) => ({
               value: pc.id,
               label: pc.name || '',
             }))}
