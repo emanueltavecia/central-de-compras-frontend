@@ -45,7 +45,6 @@ export async function getProductsBySupplier(
 
     const products = await productsService.getProducts({
       supplierOrgId,
-      status: true,
     })
     return products
   } catch (error) {
