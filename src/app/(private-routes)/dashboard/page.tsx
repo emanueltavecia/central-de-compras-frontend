@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+
 import { Tooltip } from '@mantine/core'
 
 import { getSession } from '@/lib/auth'
