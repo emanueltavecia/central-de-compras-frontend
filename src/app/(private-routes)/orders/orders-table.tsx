@@ -86,7 +86,22 @@ export function OrdersTable({ orders, userOrgType }: OrdersTableProps) {
   }
 
   function getStoreName(order: Order): string {
-    return `Loja ${order.storeOrgId.slice(-1)}`
+    return order.storeOrg?.legalName || order.storeOrg?.tradeName || 'Loja'
+  }
+
+  function getSupplierName(order: Order): string {
+    return (
+      order.supplierOrg?.legalName ||
+      order.supplierOrg?.tradeName ||
+      'Fornecedor'
+    )
+  }
+
+  function getOrganizationName(order: Order): string {
+    if (userOrgType === OrgType.SUPPLIER) {
+      return getStoreName(order)
+    }
+    return getSupplierName(order)
   }
 
   function handleOpenHistoryModal(order: Order) {
@@ -237,7 +252,11 @@ export function OrdersTable({ orders, userOrgType }: OrdersTableProps) {
         <Table.Thead>
           <Table.Tr>
             <Table.Th className="pl-8">Número Pedido</Table.Th>
-            <Table.Th className="pl-8">Nome da Loja</Table.Th>
+            <Table.Th className="pl-8">
+              {userOrgType === OrgType.SUPPLIER
+                ? 'Nome da Loja'
+                : 'Nome do Fornecedor'}
+            </Table.Th>
             <Table.Th className="pl-8">Data Pedido</Table.Th>
             <Table.Th className="pl-8">Valor Total</Table.Th>
             <Table.Th className="pl-8">Condição de Pagamento</Table.Th>
@@ -252,7 +271,9 @@ export function OrdersTable({ orders, userOrgType }: OrdersTableProps) {
                 <Table.Td className="pl-8">
                   <Text fw={500}>{order.id.slice(0, 5)}</Text>
                 </Table.Td>
-                <Table.Td className="pl-8">{getStoreName(order)}</Table.Td>
+                <Table.Td className="pl-8">
+                  {getOrganizationName(order)}
+                </Table.Td>
                 <Table.Td className="pl-8">
                   {formatDate(order.placedAt)}
                 </Table.Td>
