@@ -2,6 +2,7 @@
   "name": "central-de-compras-frontend",
   "version": "0.1.0",
   "private": true,
+  "license": "Veja licença em LICENSE.md",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
