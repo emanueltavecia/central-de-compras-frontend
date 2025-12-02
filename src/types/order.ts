@@ -1,11 +1,15 @@
 import { OrderItem } from './order-item'
+import { OrderStatusHistory } from './order-status-history'
+import { Organization } from './organization'
 
 import { OrderStatus } from '@/utils/enums'
 
 export interface Order {
   id: string
   storeOrgId: string
+  storeOrg: Organization
   supplierOrgId: string
+  supplierOrg: Organization
   status?: OrderStatus
   placedAt: string
   shippingAddressId?: string
@@ -20,6 +24,7 @@ export interface Order {
   createdBy?: string
   createdAt: string
   items: OrderItem[]
+  statusHistory: OrderStatusHistory[]
 }
 
 export interface OrderFilters {

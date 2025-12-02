@@ -83,7 +83,7 @@ export function ChangeRequestModal({
         <h2 className="text-text-primary mb-6 text-xl font-bold">
           Solicitar Alterações de Dados
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div>
             <label className="text-text-secondary mb-1 block text-sm font-medium">
               Nome

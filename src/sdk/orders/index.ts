@@ -9,6 +9,7 @@ import type {
   OrderFilters,
   SuccessResponse,
 } from '@/types'
+import { OrderStatus } from '@/utils/enums'
 import type { CreateOrderInput } from '@/utils/schemas/orders'
 
 export const ordersService = {
@@ -38,6 +39,18 @@ export const ordersService = {
       ORDERS_ROUTES.CALCULATE,
       params,
     )
+    return data.data
+  },
+
+  async updateOrderStatus(
+    id: string,
+    status: OrderStatus,
+    note?: string,
+  ): Promise<Order> {
+    const { data } = await api.patch(ORDERS_ROUTES.UPDATE_STATUS(id), {
+      newStatus: status,
+      note,
+    })
     return data.data
   },
 }

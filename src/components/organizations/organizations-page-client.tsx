@@ -1416,7 +1416,7 @@ export function OrganizationsPageClient({
         title={labels.registerTitle}
         centered
       >
-        <form onSubmit={addForm.handleSubmit(onAddSubmit)}>
+        <form onSubmit={addForm.handleSubmit(onAddSubmit)} noValidate>
           <Stack>
             <TextInput
               label="Nome"
@@ -1463,7 +1463,7 @@ export function OrganizationsPageClient({
         title={`Editar ${labels.entity}`}
         centered
       >
-        <form onSubmit={editForm.handleSubmit(onEditSubmit)}>
+        <form onSubmit={editForm.handleSubmit(onEditSubmit)} noValidate>
           <Stack>
             <TextInput
               label="Nome"
@@ -1555,7 +1555,7 @@ export function OrganizationsPageClient({
         title="Adicionar Usuário"
         centered
       >
-        <form onSubmit={addUserForm.handleSubmit(onAddUserSubmit)}>
+        <form onSubmit={addUserForm.handleSubmit(onAddUserSubmit)} noValidate>
           <Stack>
             <TextInput
               label="Nome Completo"
@@ -1609,7 +1609,7 @@ export function OrganizationsPageClient({
         title="Editar Usuário"
         centered
       >
-        <form onSubmit={editUserForm.handleSubmit(onEditUserSubmit)}>
+        <form onSubmit={editUserForm.handleSubmit(onEditUserSubmit)} noValidate>
           <Stack>
             <TextInput
               label="Nome Completo"
@@ -1774,7 +1774,10 @@ export function OrganizationsPageClient({
         title="Adicionar Contato"
         centered
       >
-        <form onSubmit={addContactForm.handleSubmit(onAddContactSubmit)}>
+        <form
+          onSubmit={addContactForm.handleSubmit(onAddContactSubmit)}
+          noValidate
+        >
           <Stack>
             <TextInput
               label="Nome"
@@ -1824,7 +1827,10 @@ export function OrganizationsPageClient({
         title="Editar Contato"
         centered
       >
-        <form onSubmit={editContactForm.handleSubmit(onEditContactSubmit)}>
+        <form
+          onSubmit={editContactForm.handleSubmit(onEditContactSubmit)}
+          noValidate
+        >
           <Stack>
             <TextInput
               label="Nome"
@@ -1931,7 +1937,10 @@ export function OrganizationsPageClient({
         title="Adicionar Endereço"
         centered
       >
-        <form onSubmit={addAddressForm.handleSubmit(onAddAddressSubmit)}>
+        <form
+          onSubmit={addAddressForm.handleSubmit(onAddAddressSubmit)}
+          noValidate
+        >
           <Stack>
             <TextInput
               label="Rua"
@@ -2004,7 +2013,10 @@ export function OrganizationsPageClient({
         title="Editar Endereço"
         centered
       >
-        <form onSubmit={editAddressForm.handleSubmit(onEditAddressSubmit)}>
+        <form
+          onSubmit={editAddressForm.handleSubmit(onEditAddressSubmit)}
+          noValidate
+        >
           <Stack>
             <TextInput
               label="Rua"

@@ -11,22 +11,60 @@ import type {
   OrderCalculationResponse,
 } from '@/types'
 import { CACHE_TAGS } from '@/utils/constants/cache-tags'
-import { UserRole } from '@/utils/enums'
+import { OrderStatus, UserRole } from '@/utils/enums'
 import { getErrorMessage } from '@/utils/error-messages'
 import type { CreateOrderInput } from '@/utils/schemas/orders'
 
-export async function getOrders(): Promise<Order[]> {
+export async function getOrders(filters?: {
+  status?: string
+  placedAtFrom?: string
+  placedAtTo?: string
+  minAmount?: string
+  maxAmount?: string
+  orderId?: string
+}): Promise<Order[]> {
   try {
     const { user } = await getSession()
     const supplierOrgId =
       user?.role.name === UserRole.SUPPLIER ? user.organizationId : undefined
     const storeOrgId =
       user?.role.name === UserRole.STORE ? user.organizationId : undefined
+
     const orders = await ordersService.getOrders({
       supplierOrgId,
       storeOrgId,
+      status: filters?.status as OrderStatus,
+      placedAtFrom: filters?.placedAtFrom
+        ? `${filters?.placedAtFrom}T00:00:00.000Z`
+        : undefined,
+      placedAtTo: filters?.placedAtTo
+        ? `${filters?.placedAtTo}T23:59:59.999Z`
+        : undefined,
     })
-    return orders
+
+    let filteredOrders = orders
+
+    if (filters?.orderId) {
+      filteredOrders = filteredOrders.filter((order) =>
+        order.id.toLowerCase().includes(filters.orderId!.toLowerCase()),
+      )
+    }
+
+    if (filters?.minAmount) {
+      const minAmount = parseFloat(filters.minAmount)
+      filteredOrders = filteredOrders.filter(
+        (order) => (order.totalAmount || 0) >= minAmount,
+      )
+    }
+
+    if (filters?.maxAmount) {
+      const maxAmount = parseFloat(filters.maxAmount)
+      filteredOrders = filteredOrders.filter(
+        (order) => (order.totalAmount || 0) <= maxAmount,
+      )
+    }
+
+    return filteredOrders
   } catch (error) {
     console.error('Erro ao buscar pedidos:', error)
     throw error

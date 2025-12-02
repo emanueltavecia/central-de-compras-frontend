@@ -39,7 +39,9 @@ export async function Header() {
                   Central de Compras
                 </h1>
                 <p className="text-text-secondary text-xs">
-                  {user?.fullName || user?.email}
+                  {user?.organization?.legalName ||
+                    user?.organization?.tradeName ||
+                    ''}
                 </p>
               </div>
             </Link>

@@ -68,7 +68,7 @@ export function CategoryModal({
     const cleanData = {
       ...data,
       parentId: data.parentId || undefined,
-      description: data.description || undefined,
+      description: (data.description || null) as string,
     }
 
     const result = isEditing
