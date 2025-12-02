@@ -172,7 +172,7 @@ export function NewOrderModal({ suppliers, userRole }: NewOrderModalProps) {
 
       try {
         const [productsData, conditionsData] = await Promise.all([
-          getProductsBySupplier(selectedSupplierId),
+          getProductsBySupplier(selectedSupplierId, true),
           getPaymentConditionsBySupplier(selectedSupplierId),
         ])
 

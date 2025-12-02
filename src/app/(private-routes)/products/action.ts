@@ -37,6 +37,7 @@ export async function getProducts(): Promise<Product[]> {
 
 export async function getProductsBySupplier(
   supplierOrgId: string,
+  onlyActive = false,
 ): Promise<Product[]> {
   try {
     if (!supplierOrgId) {
@@ -45,6 +46,7 @@ export async function getProductsBySupplier(
 
     const products = await productsService.getProducts({
       supplierOrgId,
+      status: onlyActive ? true : undefined,
     })
     return products
   } catch (error) {
