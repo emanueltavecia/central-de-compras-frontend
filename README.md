@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛒 Central de Compras - Frontend
 
-## Getting Started
+> MVP frontend for a Purchasing Center developed for academic purposes.
 
-First, run the development server:
+## 📋 About the Project
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+This is the frontend of a Purchasing Center platform, developed for the interdisciplinary project of the 4th phase of the Computer Science course at UNESC. Built with Next.js 16 and the App Router, this modern web application provides a complete interface to manage organizations, users, products, campaigns, orders, cashback, and much more.
+
+## 👥 Authors
+
+- Emanuel Cardoso Tavecia
+- Guilherme Conti Machado
+- Gabriel Alves Teixeira
+- Caio Vinícius Guimarães de Oliveira Dagostim
+
+## 🔗 Project Links
+
+- 🚀 [**Front-end Deploy**](https://central-de-compras-frontend.vercel.app/)
+- 🔙 [**Back-end Repository**](https://github.com/emanueltavecia/central-de-compras-backend)
+
+## ✨ Features
+
+- **Dashboard**: Overview with statistics and charts
+- **Organizations Management**: Manage stores and suppliers
+- **Products Catalog**: Full product management with categories
+- **Orders System**: Create, track, and manage purchase orders
+- **Campaigns**: Marketing and promotional campaigns management
+- **Cashback Program**: Transaction tracking and cashback management
+- **Payment Conditions**: Configure payment terms and conditions
+- **Supplier State Conditions**: Manage supplier-specific conditions by state
+- **User Profile**: Profile management and settings
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 with App Router
+- **Language**: TypeScript
+- **UI Library**: Mantine v8
+- **Styling**: Tailwind CSS v4
+- **Forms**: React Hook Form + Zod
+- **Icons**: Tabler Icons + Lucide React
+- **HTTP Client**: Axios
+- **Date Handling**: Day.js
+- **Package Manager**: pnpm
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── (auth)/             # Authentication routes (login)
+│   └── (private-routes)/   # Protected routes
+│       ├── dashboard/
+│       ├── campaigns/
+│       ├── cashback/
+│       ├── categories/
+│       ├── orders/
+│       ├── organizations/
+│       ├── payment-conditions/
+│       ├── products/
+│       ├── profile/
+│       └── supplier-state-conditions/
+├── components/             # Reusable UI components
+├── lib/                    # Business logic and data fetching
+├── sdk/                    # API SDK and types
+├── types/                  # TypeScript type definitions
+└── utils/                  # Utilities, constants, and schemas
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 18.17 or later
+- pnpm (recommended) or npm/yarn
 
-## Learn More
+### Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git clone https://github.com/emanueltavecia/central-de-compras-frontend.git
+   cd central-de-compras-frontend
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install dependencies**
 
-## Deploy on Vercel
+   ```bash
+   pnpm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Set up environment variables**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   Create a `.env.local` file in the root directory:
+
+   ```env
+   NEXT_PUBLIC_API_URL=your_api_url_here
+   ```
+
+4. **Run the development server**
+
+   ```bash
+   pnpm dev
+   ```
+
+5. **Open the application**
+
+   Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📜 Available Scripts
+
+| Command      | Description                          |
+| ------------ | ------------------------------------ |
+| `pnpm dev`   | Start development server             |
+| `pnpm build` | Build for production                 |
+| `pnpm start` | Start production server              |
+| `pnpm lint`  | Run Prettier and ESLint with autofix |
+
+## 👤 Default Users
+
+The seed script creates the following users for testing:
+
+| Role     | Email                            | Password  | Description                     |
+| -------- | -------------------------------- | --------- | ------------------------------- |
+| Admin    | admin@centralcompras.com         | Admin@123 | Purchasing Center Administrator |
+| Store    | loja@lojaexemplo.com             | Admin@123 | Store User                      |
+| Supplier | fornecedor@fornecedorexemplo.com | Admin@123 | Supplier User                   |
+
+### User Permissions
+
+- **Admin**: Full system access - manages users, organizations, products, orders, campaigns, and all settings
+- **Store**: Can view suppliers, create orders, and view their orders
+- **Supplier**: Can manage products, view and manage orders, manage campaigns, and configure commercial conditions
+
+## 🎨 Design System
+
+The project uses a custom color palette defined with CSS variables:
+
+| Variable          | Color   | Usage                  |
+| ----------------- | ------- | ---------------------- |
+| `--primary`       | #1976d2 | Primary actions        |
+| `--primary-light` | #42a5f5 | Hover states           |
+| `--primary-dark`  | #1565c0 | Active states          |
+| `--secondary`     | #dc004e | Secondary actions      |
+| `--success`       | #4caf50 | Success states         |
+| `--warning`       | #ff9800 | Warning states         |
+| `--error`         | #f44336 | Error states           |
+| `--info`          | #2196f3 | Informational elements |
+
+## 📄 License
+
+This project is licensed under the terms specified in [LICENSE.md](LICENSE.md).
