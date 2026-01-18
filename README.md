@@ -2,6 +2,8 @@
 
 > MVP frontend for a Purchasing Center developed for academic purposes.
 
+![Purchasing Center project cover](./.github/screenshot.png)
+
 ## 📋 About the Project
 
 This is the frontend of a Purchasing Center platform, developed for the interdisciplinary project of the 4th phase of the Computer Science course at UNESC. Built with Next.js 16 and the App Router, this modern web application provides a complete interface to manage organizations, users, products, campaigns, orders, cashback, and much more.
