@@ -129,7 +129,7 @@ The seed script creates the following users for testing:
 
 ### User Permissions
 
-- **Admin**: Full system access - manages users, organizations, products, orders, campaigns, and all settings
+- **Admin**: Can manages organizations and users
 - **Store**: Can view suppliers, create orders, and view their orders
 - **Supplier**: Can manage products, view and manage orders, manage campaigns, and configure commercial conditions
 
